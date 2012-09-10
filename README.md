@@ -1,4 +1,4 @@
-liger-print-sweater
-===================
+#liger-print-sweater
+---
 
-pieces of flair collected here
+Collecting some bits and pieces of code for later...
