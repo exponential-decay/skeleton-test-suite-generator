@@ -72,7 +72,7 @@ class TripleWriter:
 	
 		
 		self.nt_file.seek(0)	
-		bof_sequence = sig2map.map_signature(seq)
+		bof_sequence = sig2map.map_signature(min, seq)
 		
 		for x in bof_sequence:
 		

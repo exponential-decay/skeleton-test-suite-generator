@@ -16,7 +16,7 @@ def check_syntax(signature, syntax_list):
 
 def create_bytes(no):
 	for i in range(no):
-		component_list.append(hex(random.randint(18, 255)).replace('0x', ''))
+		component_list.append(hex(random.randint(0, 255)).replace('0x', ''))
 	return True
 
 def process_curly(syn):
@@ -121,12 +121,14 @@ def process_signature(signature):
 	else:
 		component_list.append(signature)
 
-def map_signature(signature):
+def map_signature(minoffset, signature):
 	
 	global component_list
 	if component_list:
 		component_list = []
 
+	create_bytes(int(minoffset))		# dangerous? need to check type?
+		
 	process_signature(signature)
 	
 	return component_list
