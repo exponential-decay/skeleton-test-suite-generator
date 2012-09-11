@@ -59,8 +59,11 @@ def sqr_not(syn):
 	syn = syn.replace('!', '')
 	s = map(ord, syn.decode('hex'))
 	i = 0
-	for h in s:
-		s[i] = s[i]-1
+	for h in s:				# this function could be seriously busted - check
+		if s[i] == 0:
+			s[i] = s[i]+1
+		else:
+			s[i] = s[i]-1
 		component_list.append(hex(s[i]).replace('0x', '').zfill(2))
 		i+=1
 	
