@@ -63,30 +63,27 @@ class TripleWriter:
 
 			
 	def write_header(self, pos, min, max, seq):
-	
-	
-
-		
-		print "min: " + str(min)
-		print "max: " + str(max)
-	
 		
 		self.nt_file.seek(0)	
 		bof_sequence = sig2map.map_signature(min, seq)
 		
+		print seq
+		
 		for x in bof_sequence:
 		
-			try:
+			print x
+		
+			'''try:
 				#s = 'd'
 				s = map(ord, x.decode('hex'))
 				for y in s:
 					self.nt_file.write(chr(y))
 			except:
-				sys.stderr.write("Signature not mapped correctly: " + seq + '\n')
+				sys.stderr.write("Signature not mapped: " + seq + '\n')'''
 			
 		
-		#self.boflen = self.nt_file.tell()
-		#print self.boflen
+		self.boflen = self.nt_file.tell()
+		print self.boflen
 		
 		
 	def write_footer(self, pos, min, max, seq):
@@ -94,7 +91,7 @@ class TripleWriter:
 		#print "max: " + str(min)
 		#print "min: " + str(max)
 
-		hello = 2
+		x = 1
 
 		#sys.stdout.write(seq)
 	

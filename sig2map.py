@@ -16,7 +16,7 @@ def check_syntax(signature, syntax_list):
 
 def create_bytes(no):
 	for i in range(no):
-		component_list.append(hex(random.randint(0, 255)).replace('0x', ''))
+		component_list.append(hex(random.randint(18, 255)).replace('0x', ''))
 	return True
 
 def process_curly(syn):
@@ -76,8 +76,6 @@ def process_thesis(syn):
 			component_list.append(hex(s[i]).replace('0x', ''))
 	else:
 		print "need to handle this: " + syn
-		
-	return True
 
 def detailed_check(signature):
 
