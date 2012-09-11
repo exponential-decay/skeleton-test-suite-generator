@@ -73,7 +73,7 @@ class TripleWriter:
 				for y in s:
 					self.nt_file.write(chr(y))
 			except:
-				sys.stderr.write("Signature not mapped: " + seq + '\n\n')
+				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
 		
@@ -89,7 +89,7 @@ class TripleWriter:
 				for y in s:
 					self.nt_file.write(chr(y))
 			except:
-				sys.stderr.write("Signature not mapped: " + seq + '\n\n')		
+				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')		
 		
 		
 	def write_var(self, pos, min, max, seq):
@@ -104,7 +104,7 @@ class TripleWriter:
 				for y in s:
 					self.nt_file.write(chr(y))
 			except:
-				sys.stderr.write("Signature not mapped: " + seq + '\n\n')	
+				sys.stderr.write("VAR Signature not mapped: " + seq + '\n\n')	
 		
 	def write_file(self, puid, puid_no, sigID, value):
 		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID
