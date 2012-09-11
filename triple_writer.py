@@ -24,7 +24,7 @@ class TripleWriter:
 		self.nt_file = 0		#to hold file pointer
 		self.puid_no = 0		#to hold the puid number we're looking at
 		self.nt_string = 0 	#triple file path...
-		self.nt_boflen = 0	#length of the bof sequence after writing
+		self.boflen = 0		#length of the bof sequence after writing
 		
 	##################################################
 	# Validate url
@@ -76,9 +76,6 @@ class TripleWriter:
 				sys.stderr.write("Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
-		
-		print "seq: " + seq
-		print "boflen: " + str(self.boflen)
 		
 	def write_footer(self, pos, min, max, seq):
 	
