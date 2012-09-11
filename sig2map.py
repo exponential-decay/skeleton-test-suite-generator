@@ -16,7 +16,7 @@ def check_syntax(signature, syntax_list):
 
 def create_bytes(no):
 	for i in range(no):
-		component_list.append(hex(random.randint(0, 255)).replace('0x', '').zfill(2))
+		component_list.append(hex(random.randint(0, 255)).replace('0x', '').zfill(2).replace('L', ''))
 	return True
 
 def process_curly(syn):
@@ -53,7 +53,7 @@ def sqr_colon(syn):
 	if syn.find(':') > -1:
 		new_str = syn.split(':')
 		val = (int(new_str[0], 16) + int(new_str[1], 16)) / 2
-		component_list.append(hex(val).replace('0x', '').zfill(2))
+		component_list.append(hex(val).replace('0x', '').zfill(2).replace('L', ''))
 		
 def sqr_not(syn):
 	syn = syn.replace('!', '')
@@ -64,7 +64,7 @@ def sqr_not(syn):
 			s[i] = s[i]+1
 		else:
 			s[i] = s[i]-1
-		component_list.append(hex(s[i]).replace('0x', '').zfill(2))
+		component_list.append(hex(s[i]).replace('0x', '').zfill(2).replace('L', ''))
 		i+=1
 	
 def process_thesis(syn):
@@ -76,7 +76,7 @@ def process_thesis(syn):
 	if syn.find('[') == -1:
 		s = map(ord, syn.decode('hex'))
 		for i in range(s.__len__()):
-			component_list.append(hex(s[i]).replace('0x', '').zfill(2))
+			component_list.append(hex(s[i]).replace('0x', '').zfill(2).replace('L', ''))
 	else:
 		print "need to handle this: " + syn
 

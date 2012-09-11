@@ -68,12 +68,12 @@ class TripleWriter:
 		bof_sequence = sig2map.map_signature(min, seq, 0)
 		
 		for x in bof_sequence:
-			#try:
-			s = map(ord, x.decode('hex'))
-			for y in s:
-				self.nt_file.write(chr(y))
-			#except:
-			#	sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
+			try:
+				s = map(ord, x.decode('hex'))
+				for y in s:
+					self.nt_file.write(chr(y))
+			except:
+				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
 		
