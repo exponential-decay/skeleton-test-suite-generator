@@ -77,6 +77,9 @@ class TripleWriter:
 
 		self.boflen = self.nt_file.tell()
 		
+		print "seq: " + seq
+		print "boflen: " + str(self.boflen)
+		
 	def write_footer(self, pos, min, max, seq):
 	
 		self.nt_file.seek(0,2)				# seek to end of file
@@ -93,25 +96,18 @@ class TripleWriter:
 		
 		
 	def write_var(self, pos, min, max, seq):
-	
-		print seq
-	
-		#print "max: " + str(min)
-		#print "min: " + str(max)
-	
-		#self.nt_file.seek(position after bof was written)
 		
-		#read bof end position and find suitable
-		#place to write var byte sequence to
+		self.nt_file.seek(self.boflen)
 		
-		#print "var"
-		#self.nt_file.write("var:"+seq)
+		var_sequence = sig2map.map_signature(10, seq, 10)		#padding sequence
 		
-		
-		hello = 2
-		
-		#sys.stdout.write(seq)
-		
+		for x in var_sequence:
+			try:
+				s = map(ord, x.decode('hex'))
+				for y in s:
+					self.nt_file.write(chr(y))
+			except:
+				sys.stderr.write("Signature not mapped: " + seq + '\n\n')	
 		
 	def write_file(self, puid, puid_no, sigID, value):
 		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID
