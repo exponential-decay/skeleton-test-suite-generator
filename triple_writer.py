@@ -67,8 +67,8 @@ class TripleWriter:
 	
 
 		
-		#print "max: " + str(min)
-		#print "min: " + str(max)
+		print "min: " + str(min)
+		print "max: " + str(max)
 	
 		
 		self.nt_file.seek(0)	

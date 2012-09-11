@@ -101,7 +101,7 @@ def detailed_check(signature):
 		elif check_byte == '(':
 			index = signature.find(')')
 			syn = signature[0:index+1]
-			#process_thesis(syn)
+			process_thesis(syn)
 		elif check_byte == '*':
 			create_bytes(20)
 	
@@ -122,9 +122,9 @@ def process_signature(signature):
 		component_list.append(signature)
 
 def map_signature(signature):
-
+	
+	global component_list
 	if component_list:
-		global component_list
 		component_list = []
 
 	process_signature(signature)
