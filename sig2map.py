@@ -119,14 +119,16 @@ def process_signature(signature):
 	else:
 		component_list.append(signature)
 
-def map_signature(minoffset, signature):
+def map_signature(bofoffset, signature, eofoffset):
 	
 	global component_list
 	if component_list:
 		component_list = []
 
-	create_bytes(int(minoffset))		# dangerous? need to check type?
+	create_bytes(int(bofoffset))		# dangerous? need to check type?
 		
 	process_signature(signature)
+	
+	create_bytes(int(eofoffset))
 	
 	return component_list
