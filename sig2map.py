@@ -78,7 +78,7 @@ def process_thesis(syn):
 		for i in range(s.__len__()):
 			component_list.append(hex(s[i]).replace('0x', '').zfill(2).replace('L', ''))
 	else:
-		print "need to handle this: " + syn
+		process_square(syn)
 
 def detailed_check(signature):
 
