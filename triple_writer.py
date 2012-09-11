@@ -94,7 +94,7 @@ class TripleWriter:
 		
 	def write_var(self, pos, min, max, seq):
 	
-		#print seq
+		print seq
 	
 		#print "max: " + str(min)
 		#print "min: " + str(max)

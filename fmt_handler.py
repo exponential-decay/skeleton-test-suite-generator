@@ -100,8 +100,8 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 				tr.write_header(x[1][0],x[1][1],x[1][2],x[1][3])
 			if x[1][0] == 'Absolute from EOF':
 				tr.write_footer(x[1][0],x[1][1],x[1][2],x[1][3])
-			#if x[1][0] == 'Variable':
-			#	tr.write_var(x[1][0],x[1][1],x[1][2],x[1][3])
+			if x[1][0] == 'Variable':
+				tr.write_var(x[1][0],x[1][1],x[1][2],x[1][3])
 
 ##################################################
 # 

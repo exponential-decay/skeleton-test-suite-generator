@@ -125,10 +125,12 @@ def map_signature(bofoffset, signature, eofoffset):
 	if component_list:
 		component_list = []
 
-	create_bytes(int(bofoffset))		# dangerous? need to check type?
+	if bofoffset != 'null':
+		create_bytes(int(bofoffset))		# dangerous? need to check type?
 		
 	process_signature(signature)
 	
-	create_bytes(int(eofoffset))
+	if eofoffset != 'null':
+		create_bytes(int(eofoffset))
 	
 	return component_list
