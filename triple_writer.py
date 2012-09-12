@@ -104,8 +104,8 @@ class TripleWriter:
 			except:
 				sys.stderr.write("VAR Signature not mapped: " + seq + '\n\n')	
 		
-	def write_file(self, puid, puid_no, sigID, value):
-		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID
+	def write_file(self, puid, puid_no, sigID, value, ext):
+		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID + '.' + ext
 		self.puid_no = puid_no
 		if os.path.exists(self.nt_string) == False:
 			self.nt_file = open(self.nt_string, 'w')

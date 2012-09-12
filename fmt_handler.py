@@ -24,6 +24,8 @@ MINOFF = 1
 MAXOFF = 2
 BYTSEQ = 3
 
+extension = ''
+ext_added = False
 
 def reset_sequence_list():
 	global sequence_list
@@ -77,6 +79,11 @@ def handler(puid_type, number_path_pair):
 
 			del header_list[:]
 			del content_list[:]
+			
+			global extension
+			extension = ''
+			global ext_added
+			ext_added = False
 
 
 	except IOError as (errno, strerror):
@@ -92,8 +99,14 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 		if x[0] == 'Internal Signature ID':
 			if x[1] != sigID:
 				sigID = x[1]
+				
+				if content_list[1][0] == 'File Extension':
+					ext = content_list[1][1]
+				else:
+					ext = 'nul'
+				
 				#create a new file
-				tr.write_file(puid_type, file_no, sigID, puid_str)
+				tr.write_file(puid_type, file_no, sigID, puid_str, ext)
 
 		if x[0] == 'Byte sequence':
 			if x[1][0] == 'Absolute from BOF':
@@ -169,7 +182,7 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 	
 	elif parent_subnode_pair == 'InternalSignature SignatureName':
 		
-		print node_value
+		#print node_value
 		
 		#print node_value.replace(' ', '')
 		
@@ -199,6 +212,17 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 		sequence_list.insert(BYTSEQ, node_value)
 		content_list.append(["Byte sequence", sequence_list])
 		reset_sequence_list()
+		
+	elif parent_subnode_pair == 'ExternalSignature Signature':
+		global extension
+		extension = node_value
+	elif parent_subnode_pair == 'ExternalSignature SignatureType':	
+		if node_value == 'File extension':	
+			global ext_added
+			if ext_added == False:
+				header_list.append(["File Extension", extension])
+				content_list.append(["File Extension", extension])
+				ext_added = True
 
 ##################################################
 # 
