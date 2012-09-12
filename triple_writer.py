@@ -108,7 +108,7 @@ class TripleWriter:
 		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID + '.' + ext
 		self.puid_no = puid_no
 		if os.path.exists(self.nt_string) == False:
-			self.nt_file = open(self.nt_string, 'w')
+			self.nt_file = open(self.nt_string, 'wb')
 		
 		#self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + '-bytedat.bin'
 		#self.puid_no = puid_no
