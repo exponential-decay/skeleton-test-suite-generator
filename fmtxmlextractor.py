@@ -92,7 +92,7 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 					ext = content_list[1][1]
 				else:
 					ext = 'nul'
-				#create a new file
+				#New internal sig, new file - create
 				fr.write_file(puid_type, file_no, sigID, puid_str, ext)
 		if x[0] == 'Byte sequence':
 			if x[1][0] == 'Absolute from BOF':

@@ -6,10 +6,7 @@ import ConfigParser
 
 class FileWriter:
 
-	##################################################
-	# __init__
-	# Class constructor... initialize variables here
-	##################################################
+	# Class constructor
 	def __init__(self, puid_type):
 	
 		config = ConfigParser.RawConfigParser()
@@ -28,43 +25,8 @@ class FileWriter:
 		self.puid_no = 0		#to hold the puid number we're looking at
 		self.nt_string = 0 	#triple file path...
 		self.boflen = 0		#length of the bof sequence after writing
-		
-	##################################################
-	# Validate url
-	# If string is a URL put in angle brackets / literal
-	##################################################
-	def __validate_url(self, value):		#__ says this is a private member function
-		v2 = urlparse(value)						# parse url
-		if v2.scheme == 'http':					# return scheme
-			value = '<' + value + '>'
-		else:
-			value = '"' + value + '"'
-			
-		return value
-
-	##################################################
-	# Write triple
-	# generic function to output all purpose triple
-	##################################################
-	def write_metadata(self, puid, puid_no, value):
-		
-		#if we receive a different puid_no from the function call and it
-		#doesn't match the member variable self.puid_no we are parsing a 
-		#new xml file and so need a new triple file as a result...
-		if self.puid_no != puid_no:
-			#type will be null as class persists so don't need to check...
-			#assign values to member variables...
-			self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + '-bytedat.bin'
-			self.puid_no = puid_no
-			#double check file existance... should be false
-			if os.path.exists(self.nt_string) == False:
-				self.nt_file = open(self.nt_string, 'w')
-				self.nt_file.write("DROID bytedat 1.0" + '\n')
-
-		if type(self.nt_file) == file:				# check we've initialized member variable
-			self.nt_file.write("Format: " + value + '\n')
-
-			
+	
+	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
 		
 		self.nt_file.seek(0)	
@@ -79,7 +41,8 @@ class FileWriter:
 				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
-		
+	
+	# Write EOF sequence to file
 	def write_footer(self, pos, min, max, seq):
 	
 		self.nt_file.seek(0,2)				# seek to end of file
@@ -93,7 +56,7 @@ class FileWriter:
 			except:
 				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')		
 		
-		
+	# Write variable sequences to file	
 	def write_var(self, pos, min, max, seq):
 		
 		self.nt_file.seek(self.boflen)
@@ -106,7 +69,8 @@ class FileWriter:
 					self.nt_file.write(chr(y))
 			except:
 				sys.stderr.write("VAR Signature not mapped: " + seq + '\n\n')	
-		
+	
+	# Create a new file
 	def write_file(self, puid, puid_no, sigID, value, ext):
 		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID + '.' + ext
 		self.puid_no = puid_no
