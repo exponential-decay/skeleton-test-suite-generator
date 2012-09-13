@@ -3,7 +3,7 @@
 
 import xml.etree.ElementTree as etree
 import std_properties as std
-import file-writer
+import filewriter
 import sys
 import re
 
@@ -46,7 +46,7 @@ def handler(puid_type, number_path_pair):
 
 	#create triple writing object to handle majority of output functions
 	global tr
-	tr = triple_writer.TripleWriter(puid_type)
+	tr = filewriter.TripleWriter(puid_type)
 	
 	file_no = number_path_pair[0]
 	file_name = number_path_pair[1]

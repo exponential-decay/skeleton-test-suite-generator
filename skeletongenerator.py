@@ -1,13 +1,13 @@
 #puid type mapping script...
 
 import std_properties
-import fmt-xml-extractor
+import fmtxmlextractor
 import os
 import sys
-import delete-created-files
+import deletefiles
 import re
 
-del_files.cleanup()
+deletefiles.cleanup()
 
 #test file exists, if it doesn't we need to increment x
 #and ensure for each file that doesn't exist we read the
@@ -52,4 +52,4 @@ for puids in std_properties.puids:
 			#now check puid type...
 			#forward to puid handlers for each puid type...
 			if puids == 'fmt' or puids == 'x-fmt':
-				fmt_handler.handler(puids, [file_no, file_path])
+				fmtxmlextractor.handler(puids, [file_no, file_path])
