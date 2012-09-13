@@ -2,6 +2,7 @@ from urlparse import urlparse
 import os
 import sys
 import signature2bytegenerator as sig2map
+import ConfigParser
 
 class TripleWriter:
 
@@ -10,8 +11,11 @@ class TripleWriter:
 	# Class constructor... initialize variables here
 	##################################################
 	def __init__(self, puid_type):
+	
+		config = ConfigParser.RawConfigParser()
+		config.read('skeletonsuite.cfg')
 
-		self.newtriplesdir = os.getcwd() + "//mapping_output_test//" + puid_type + '-bytedat-files//'
+		self.newtriplesdir = os.getcwd() + "//" + config.get('locations', 'output') + "//" + puid_type + '-bytedat-files//'
 
 		if os.path.exists(self.newtriplesdir) == False:
 			try:
