@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import xml.etree.ElementTree as etree
-import std_properties as std
 import filewriter
 import sys
 import re
@@ -129,7 +128,7 @@ def extract(puid_type, file_no, xml_iter, parent_node):
 			#need to recurse a parent node in xml which has multiple sub nodes
 			#create an iterator to do so and create a list from the iterator
 			#to access the contents of the sub nodes easier. 
-			temporary_parent_node = std.strip_text(i)
+			temporary_parent_node = strip_text(i)
 			new_iter = iter(i)
 
 			#exceptions can go here, e.g. if exception equals true then go into 
@@ -148,11 +147,11 @@ def extract(puid_type, file_no, xml_iter, parent_node):
 				
 					parent_text = parent_node.replace('{http://pronom.nationalarchives.gov.uk}', '')
 
-					node_text = std.strip_text(i)
+					node_text = strip_text(i)
 					node_text = node_text.replace('{http://pronom.nationalarchives.gov.uk}', '')
 					
 					#handle the normalization of text here... covers all puid types
-					node_value = std.text_replace(i.text.encode('UTF-8'))
+					node_value = text_replace(i.text.encode('UTF-8'))
 					
 					parent_subnode_pair = parent_text + ' ' + node_text
 					compare_result = False
@@ -230,9 +229,11 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 ##################################################
 def file_creator(puid_type, puid_no, parent_subnode_pair, node_value):
 
-	parent_subnode_pair = parent_subnode_pair.replace("'", "")
+	a = 0
+	
+	#parent_subnode_pair = parent_subnode_pair.replace("'", "")
 
-	if parent_subnode_pair == 'FileFormat FormatName':
+	'''if parent_subnode_pair == 'FileFormat FormatName':
 		tr.triple_out(puid_type, puid_no, "Format Name", std.create_literal(node_value).replace("  ", " "))
 	elif parent_subnode_pair == 'FileFormat FormatVersion':
 		tr.triple_out(puid_type, puid_no, "Format version", std.create_literal(node_value))
@@ -249,7 +250,7 @@ def file_creator(puid_type, puid_no, parent_subnode_pair, node_value):
 	elif parent_subnode_pair == 'ByteSequence MaxOffset':
 		tr.triple_out(puid_type, puid_no, "Max offset", std.create_literal(node_value))
 	elif parent_subnode_pair == 'ByteSequence ByteSequenceValue':
-		tr.triple_out(puid_type, puid_no, "Byte string", std.create_literal(node_value))
+		tr.triple_out(puid_type, puid_no, "Byte string", std.create_literal(node_value))'''
 
 
 ##################################################
@@ -281,3 +282,32 @@ def node_exception_handler(puid_type, puid_no, temporary_parent_node, new_iter):
 			
 
 	return rv
+	
+def strip_text(text):
+
+	#bug with strip for Endianess tag? - don't strip first space
+	#continue as if index begins at one from this point...
+	new_text = str(text).strip('<Element')
+	substr_pos = new_text[1:].find(' ');
+	
+	#if we output new_text alone we output just the node names for all nodes that are not null... (probably some better place
+	#for this comment if we try!)
+	return new_text[1:substr_pos+1]
+	
+def text_replace(node_value_text):
+
+	#
+	# NEED TO REPLACE ALL OF THESE IN ONE GO, \\ cancelling out previous escapes...
+	# TODO: better function for this...
+	# import re? re.escape(txt)
+	#
+	#escape invalid characters...
+	node_value_text = node_value_text.replace('\n','\\n')
+	node_value_text = node_value_text.replace('"', '\\"')
+	node_value_text = node_value_text.replace('\t', '\\t')
+	node_value_text = node_value_text.replace('\r', '\\r')
+
+	#might cause issues...
+	node_value_text = node_value_text.replace('\\', '\\\\')
+
+	return node_value_text

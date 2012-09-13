@@ -1,5 +1,4 @@
 from urlparse import urlparse
-import std_properties
 import os
 import sys
 import signature2bytegenerator as sig2map

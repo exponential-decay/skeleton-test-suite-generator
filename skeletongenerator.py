@@ -1,6 +1,5 @@
 #puid type mapping script...
 
-import std_properties
 import fmtxmlextractor
 import os
 import sys
@@ -33,7 +32,7 @@ def test_file(file_no, file_path):
 #############################################################
 export_location = 'pronom_export'
 
-for puids in std_properties.puids:
+for puids in ['fmt', 'x-fmt']:
 	
 	files_to_read = 0
 
