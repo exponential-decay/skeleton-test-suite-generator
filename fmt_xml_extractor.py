@@ -3,7 +3,7 @@
 
 import xml.etree.ElementTree as etree
 import std_properties as std
-import triple_writer
+import file-writer
 import sys
 import re
 

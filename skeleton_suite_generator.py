@@ -1,10 +1,10 @@
 #puid type mapping script...
 
 import std_properties
-import fmt_handler
+import fmt-xml-extractor
 import os
 import sys
-import del_files
+import delete-created-files
 import re
 
 del_files.cleanup()

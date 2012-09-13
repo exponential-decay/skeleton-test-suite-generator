@@ -2,7 +2,7 @@ from urlparse import urlparse
 import std_properties
 import os
 import sys
-import sig2map
+import signature-2-byte-generator
 
 class TripleWriter:
 
