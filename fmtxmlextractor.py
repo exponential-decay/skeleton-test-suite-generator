@@ -9,9 +9,9 @@ import re
 
 fmt_no = 0					# to be incremented as we create a new uri for each sfw resource
 
-header_list = []			# globals - can be removed if so inclined, for ease of dev
-content_list = []			# globals - can be removed if so inclined, for ease of dev
-signature_id_name = []	# globals - can be removed if so inclined, for ease of dev 
+header_list = []			# To potentially store metadata for these files
+content_list = []			# To store the data we're interested in
+signature_id_name = []	# TMP to store sig id values before adding to content_list
 
 # TODO: Better way than using these globals? remaining from early prototype
 SEQPOS = 0
