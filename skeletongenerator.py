@@ -6,6 +6,7 @@ import sys
 import deletefiles
 import re
 import ConfigParser
+import time
 
 # read pronom export and forward to puid handlers
 def readPronomExport(config):
@@ -24,10 +25,17 @@ def readPronomExport(config):
 				fmtxmlextractor.handler(puids, [file_no, file_path])
 
 def main():
+	
+	#time script execution time roughly...
+	t0 = time.clock()
+	
 	config = ConfigParser.RawConfigParser()
 	config.read('skeletonsuite.cfg')
 	deletefiles.cleanup()
 	readPronomExport(config)
+
+	#print script execution time...
+	print 'Skeleton suite generation time: ' + str(time.clock() - t0) + ' seconds.'
 
 if __name__ == "__main__":
     main()
