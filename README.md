@@ -1,4 +1,4 @@
-#Skeleton test suite generator *(skeleton-suite-generator)*
+#**Skeleton test suite generator** (skeleton-suite-generator)
 ---
 
 Herein lies the scripts for the automated generation of digital 
