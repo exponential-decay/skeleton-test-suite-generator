@@ -1,4 +1,4 @@
-#Skeleton test suite generator (skeleton-suite-generator)
+#Skeleton test suite generator *(skeleton-suite-generator)*
 ---
 
 Herein lies the scripts for the automated generation of digital 
@@ -47,7 +47,7 @@ Does not suffer issues relating to IPR and copyright. The suite and
 generator tool, licensed under CC BY-SA (see below).
 
 The tool so far is a prototype and it doesn't handle every sequence in 
-PRONOM as of yet. Signatures with multiple BOF sequences for example 
+PRONOM as of yet. Signatures with multiple BOF sequences, for example, 
 will not generate correctly. While this can be corrected by the team 
 working on PRONOM, these are legitimate sequences that should be handled 
 by the tool. 
