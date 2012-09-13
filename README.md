@@ -64,7 +64,7 @@ e.g. should the internal structure of files be self-describing?
 non-prototypical output of this generator and the test-suite henceforth.
 
 * Understand what do we need to do with multiple combinations of byte 
-sequences - currently we simply *always* turn-left.  
+sequences - currently we *always* turn-left.  
 
 ###License
 
