@@ -35,7 +35,10 @@ def main():
 	readPronomExport(config)
 
 	#print script execution time...
-	print 'Skeleton suite generation time: ' + str(time.clock() - t0) + ' seconds.'
+	sys.stdout.write('Skeleton suite generation time:    ' + str(time.clock() - t0) + 's' + '\n')
+	stats = fmtxmlextractor.get_stats()
+	for value in stats:
+		sys.stdout.write(value + str(stats[value]) + '\n')
 
 if __name__ == "__main__":
     main()

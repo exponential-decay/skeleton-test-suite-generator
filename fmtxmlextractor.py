@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import xml.etree.ElementTree as etree
+from collections import OrderedDict
 import filewriter
 import sys
 import re
@@ -26,6 +27,15 @@ BYTSEQ = 3
 extension = ''
 ext_added = False
 
+format_sig_count = 0
+record_count = 0
+files_created = 0
+
+def get_stats():
+	return OrderedDict([	("Number of PRONOM records:          ", record_count), 
+								("Number of formats with Signatures: ", format_sig_count), 
+								("Number of files created:           ", files_created)])
+
 def reset_sequence_list():
 	global sequence_list
 	del sequence_list
@@ -36,6 +46,9 @@ def reset_sequence_list():
 # 
 ##################################################
 def handler(puid_type, number_path_pair):
+
+	global record_count
+	record_count += 1
 
 	global fmt_no
 	fmt_no = number_path_pair[0]
@@ -60,8 +73,14 @@ def handler(puid_type, number_path_pair):
 		int_sig = format_elem.findall('{http://pronom.nationalarchives.gov.uk}InternalSignature')
 		number_of_internal_signatures = len(int_sig)
 		files_to_create = number_of_internal_signatures
+		
+		global files_created
+		files_created += files_to_create
 
 		if int_sig:
+		
+			global format_sig_count
+			format_sig_count += 1
 			
 			puid_str = puid_type + '/' + str(file_no)
 			
@@ -83,6 +102,7 @@ def handler(puid_type, number_path_pair):
 			extension = ''
 			global ext_added
 			ext_added = False
+			
 
 
 	except IOError as (errno, strerror):
