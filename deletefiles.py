@@ -1,7 +1,10 @@
 import shutil
 import os
 import sys
+import ConfigParser
 
 def cleanup():
 
-	shutil.rmtree('mapping_output_test', True)
+	config = ConfigParser.RawConfigParser()
+	config.read('skeletonsuite.cfg')  
+	shutil.rmtree(config.get('locations', 'output'), True)

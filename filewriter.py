@@ -13,9 +13,9 @@ class TripleWriter:
 	def __init__(self, puid_type):
 	
 		config = ConfigParser.RawConfigParser()
-		config.read('skeletonsuite.cfg')
+		config.read('skeletonsuite.cfg') 
 
-		self.newtriplesdir = os.getcwd() + "//" + config.get('locations', 'output') + "//" + puid_type + '-bytedat-files//'
+		self.newtriplesdir = os.getcwd() + "//" + config.get('locations', 'output') + "//" + puid_type + '//'
 
 		if os.path.exists(self.newtriplesdir) == False:
 			try:
@@ -112,11 +112,3 @@ class TripleWriter:
 		self.puid_no = puid_no
 		if os.path.exists(self.nt_string) == False:
 			self.nt_file = open(self.nt_string, 'wb')
-		
-		#self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + '-bytedat.bin'
-		#self.puid_no = puid_no
-		#double check file existance... should be false
-		#if os.path.exists(self.nt_string) == False:
-		#	self.nt_file = open(self.nt_string, 'w')
-		#	self.nt_file.write("DROID bytedat 1.0:" + '\n')	
-
