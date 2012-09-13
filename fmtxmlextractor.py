@@ -8,7 +8,6 @@ import sys
 import re
 
 fmt_no = 0					# to be incremented as we create a new uri for each sfw resource
-
 header_list = []			# To potentially store metadata for these files
 content_list = []			# To store the data we're interested in
 signature_id_name = []	# TMP to store sig id values before adding to content_list
