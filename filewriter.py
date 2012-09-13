@@ -4,7 +4,7 @@ import sys
 import signature2bytegenerator as sig2map
 import ConfigParser
 
-class TripleWriter:
+class FileWriter:
 
 	##################################################
 	# __init__
