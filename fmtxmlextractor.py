@@ -1,8 +1,8 @@
 # fmt and x-fmt PUID handler...
 # -*- coding: utf-8 -*-
 
-import xml.etree.ElementTree as etree
 from collections import OrderedDict
+import xml.etree.ElementTree as etree
 import filewriter
 import sys
 import re
