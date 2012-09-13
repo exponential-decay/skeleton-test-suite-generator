@@ -1,4 +1,4 @@
-#skeleton-suite-generator
+#Skeleton test suite generator (skeleton-suite-generator)
 ---
 
 Herein lies the scripts for the automated generation of digital 
@@ -15,12 +15,12 @@ The tool takes a signature specified for a digital object in PRONOM and
 constructs a digital object that will match its footprint. For example, 
 given the signature:
 
-'''CAFED00D{4}CAFEBABE(0D|0D0A)
+    CAFED00D{4}CAFEBABE(0D|0D0A)
 
 The hex sequence which composes a digital object that will match 
 this signature in DROID will look like the following:
 
-'''CADED00D00000000CAFEBABE0D0A
+    CADED00D00000000CAFEBABE0D0A
 
 The scripts take an export of the PRONOM database in XML, extract the 
 internal signature information belonging to each format record and 
@@ -65,5 +65,7 @@ non-prototypical output of this generator and the test-suite henceforth.
 
 * Understand what do we need to do with multiple combinations of byte 
 sequences - currently we simply *always* turn-left.  
+
+###License
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
