@@ -227,36 +227,6 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 # 
 # 
 ##################################################
-def file_creator(puid_type, puid_no, parent_subnode_pair, node_value):
-
-	a = 0
-	
-	#parent_subnode_pair = parent_subnode_pair.replace("'", "")
-
-	'''if parent_subnode_pair == 'FileFormat FormatName':
-		tr.triple_out(puid_type, puid_no, "Format Name", std.create_literal(node_value).replace("  ", " "))
-	elif parent_subnode_pair == 'FileFormat FormatVersion':
-		tr.triple_out(puid_type, puid_no, "Format version", std.create_literal(node_value))
-	elif parent_subnode_pair == 'InternalSignature SignatureID':
-		tr.triple_out(puid_type, puid_no, "Internal Signature ID", std.create_literal(node_value))
-	elif parent_subnode_pair == 'InternalSignature SignatureName':
-		tr.triple_out(puid_type, puid_no, "Internal Signature Name", std.create_literal(node_value))
-	elif parent_subnode_pair == 'ByteSequence ByteSequenceID':
-		tr.triple_out(puid_type, puid_no, "Byte Sequence ID", std.create_literal(node_value))
-	elif parent_subnode_pair == 'ByteSequence PositionType':
-		tr.triple_out(puid_type, puid_no, "Sequence position", std.create_literal(node_value))
-	elif parent_subnode_pair == 'ByteSequence Offset':
-		tr.triple_out(puid_type, puid_no, "Min offset", std.create_literal(node_value))
-	elif parent_subnode_pair == 'ByteSequence MaxOffset':
-		tr.triple_out(puid_type, puid_no, "Max offset", std.create_literal(node_value))
-	elif parent_subnode_pair == 'ByteSequence ByteSequenceValue':
-		tr.triple_out(puid_type, puid_no, "Byte string", std.create_literal(node_value))'''
-
-
-##################################################
-# 
-# 
-##################################################
 def node_exception_handler(puid_type, puid_no, temporary_parent_node, new_iter):
 
 	#initialize return value here...
