@@ -181,22 +181,8 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 	
 	elif parent_subnode_pair == 'InternalSignature SignatureName':
 		
-		#print node_value
-		
-		#print node_value.replace(' ', '')
-		
-		#create a file number based on integers in path
-		#attempt to create a file name... add the version no to it?
-		#hmm, but what if signature is versioned by text??
-		#content list describes the file. 
-		
-		#file_no = re.findall('[0-9]', node_value)
-		#print file_no
-		
 		signature_id_name[0] = str(signature_id_name[0] + " " + node_value.replace(' ', ''))
-		
 		content_list.append(["Internal Signature Name", signature_id_name[0]])
-		
 		del signature_id_name[:]
 		
 	elif parent_subnode_pair == 'ByteSequence ByteSequenceID':

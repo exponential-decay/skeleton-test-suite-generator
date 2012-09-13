@@ -44,11 +44,5 @@ for puids in ['fmt', 'x-fmt']:
 	for root, dirs, files in os.walk(puid_xml_loc):
 		for file in files:
 			file_path = root + "//" + file
-
-			#create a file number based on integers in path
-			file_no = re.findall(r'\d+', file_path)[0]
-		
-			#now check puid type...
-			#forward to puid handlers for each puid type...
-			if puids == 'fmt' or puids == 'x-fmt':
-				fmtxmlextractor.handler(puids, [file_no, file_path])
+			file_no = re.findall(r'\d+', file_path)[0] 	#create a file number based on integers in path
+			fmtxmlextractor.handler(puids, [file_no, file_path])
