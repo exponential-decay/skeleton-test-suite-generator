@@ -1,11 +1,11 @@
-#**Skeleton test suite generator** *(skeleton-suite-generator)*
+#DROID Skeleton Test Suite Generator *(skeleton-test-suite-generator)*
 ---
 
 Herein lies the scripts for the automated generation of digital 
 objects based on the digital signatures documented in the PRONOM database 
 maintained by The National Archives, UK. 
 
-The skeleton-suite-generator serves to fill the gap that exists whereby 
+The skeleton-test-suite-generator serves to fill the gap that exists whereby 
 the community requires a corpus of digital objects for the validation and
 evaluation of format identification tools and techniques. The tool 
 should be used to complement a methodology whereby skeleton 
@@ -64,7 +64,7 @@ e.g. should the internal structure of files be self-describing?
 non-prototypical output of this generator and the test-suite henceforth.
 
 * Understand what do we need to do with multiple combinations of byte 
-sequences - currently we *always* turn-left.  
+sequences - currently we always *turn-left*.  
 
 ###License
 
