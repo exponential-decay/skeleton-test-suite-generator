@@ -1,6 +1,7 @@
 from urlparse import urlparse
 import os
 import sys
+import string
 import signature2bytegenerator as sig2map
 import ConfigParser
 from io import BytesIO
@@ -40,11 +41,28 @@ class FileWriter:
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
 		
-		self.detect_write_issues(self.BOF)
+		grt = "Attempting to correct offset > current BOF file pointer.."
+		eq2 = "Attempting to correct offset == current BOF file" 
+		eq3 = "pointer, so writing after.."
 		
-		self.nt_file.seek(0)	
-		bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
-
+		self.detect_write_issues(self.BOF)
+		bof_sequence = ''
+		if self.bof_written == True:
+			if int(min) > int(self.boflen):
+				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(grt, 20, ' ') + '\n')
+				self.nt_file.seek(self.boflen)
+				mint = int(min) - int(self.boflen)
+				bof_sequence = sig2map.map_signature(mint, seq, 0, self.fillbyte)
+			elif int(min) == 0:	# if second sequence is zero may be error in PRONOM
+										# so write after BOF to not overwrite anything
+				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq2, 20, ' ') + '\n')
+				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq3, 20, ' ') + '\n')
+				self.nt_file.seek(self.boflen)	
+				bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
+		else:
+			self.nt_file.seek(0)	
+			bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
+			
 		tmpread = False
 		if self.eof_written == True:		# read eof into tmp and re-write
 			tmpread = self.write_seq_with_eof()
@@ -139,14 +157,14 @@ class FileWriter:
 		
 		if POS == self.BOF:
 			if self.bof_written == True:
-				sys.stderr.write("WARNING: " + error_str + "Attempting to write BOF with BOF written." + "\n")
+				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write BOF with BOF written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write("INFO:    " + error_str + "Attempting to write BOF with EOF written." + "\n")
+				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write BOF with EOF written." + "\n")
 		elif POS == self.EOF:
 			if self.eof_written == True:
-				sys.stderr.write("WARNING: " + error_str + "Attempting to write EOF with EOF written." + "\n")
+				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write EOF with EOF written." + "\n")
 		elif POS == self.VAR:
 			if self.var_written == True:
-				sys.stderr.write("WARNING: " + error_str + "Attempting to write VAR with VAR written." + "\n")
+				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write("INFO:    " + error_str + "Attempting to write VAR with EOF written." + "\n")
+				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with EOF written." + "\n")
