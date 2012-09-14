@@ -128,7 +128,7 @@ class FileWriter:
 	# provide feedback to users as a warning.
 	def detect_write_issues(self, POS):
 		
-		error_str = "File generation issue (" + self.puid_str + "): "
+		error_str = "(" + self.puid_str + "): "
 		
 		if POS == self.BOF:
 			if self.bof_written == True:
@@ -140,4 +140,4 @@ class FileWriter:
 			if self.var_written == True:
 				sys.stderr.write("WARNING: " + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write("INFO: " + error_str + "Attempting to write VAR with EOF written." + "\n")
+				sys.stderr.write("INFO:    " + error_str + "Attempting to write VAR with EOF written." + "\n")
