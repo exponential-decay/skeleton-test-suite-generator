@@ -19,18 +19,24 @@ class FileWriter:
 				os.makedirs(self.newtriplesdir)
 			except OSError as (errno, strerror):
 				sys.stderr.write("OS error({0}): {1}".format(errno, strerror) + '\n')
-			
+		
 		#variables to hold details about individual triple files
 		self.nt_file = 0		#to hold file pointer
 		self.puid_no = 0		#to hold the puid number we're looking at
 		self.nt_string = 0 	#triple file path...
 		self.boflen = 0		#length of the bof sequence after writing
+		
+		try:
+			self.fillbyte = config.getint('runtime', 'fillbyte')
+		except ValueError as (strerror):
+			sys.stderr.write("Value Error: {0}. ".format(strerror) + "\n" + "Setting fillbyte to zero."  + '\n')
+			self.fillbyte = 0
 	
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
 		
 		self.nt_file.seek(0)	
-		bof_sequence = sig2map.map_signature(min, seq, 0, 0)
+		bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
 		
 		for x in bof_sequence:
 			try:
@@ -46,7 +52,7 @@ class FileWriter:
 	def write_footer(self, pos, min, max, seq):
 	
 		self.nt_file.seek(0,2)				# seek to end of file
-		eof_sequence = sig2map.map_signature(0, seq, min, 0)
+		eof_sequence = sig2map.map_signature(0, seq, min, self.fillbyte)
 		
 		for x in eof_sequence:
 			try:
@@ -60,7 +66,7 @@ class FileWriter:
 	def write_var(self, pos, min, max, seq):
 		
 		self.nt_file.seek(self.boflen)
-		var_sequence = sig2map.map_signature(10, seq, 10, 0)		#padding sequence
+		var_sequence = sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
 		
 		for x in var_sequence:
 			try:
