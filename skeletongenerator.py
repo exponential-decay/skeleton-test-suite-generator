@@ -7,6 +7,7 @@ import deletefiles
 import re
 import ConfigParser
 import time
+import argparse
 
 # read pronom export and forward to puid handlers
 def readPronomExport(config):
@@ -24,7 +25,14 @@ def readPronomExport(config):
 				file_no = re.findall(r'\d+', file_path)[0] 	#create a file number based on integers in path
 				fmtxmlextractor.handler(puids, [file_no, file_path])
 
+def parseCommandLine():
+	parser = argparse.ArgumentParser(description='Tool for the automated generation of digital objects based on the digital signatures documented in the PRONOM database maintained by The National Archives, UK.')
+	parser.add_argument('--version', help="Display the version number of the tool", action='version', version='%(prog)s 0.1 BETA')
+	args = parser.parse_args()
+
 def main():
+	
+	parseCommandLine()
 	
 	#time script execution time roughly...
 	t0 = time.clock()
