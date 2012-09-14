@@ -1,7 +1,7 @@
 #DROID Skeleton Test Suite Generator *(skeleton-test-suite-generator)*
 ---
 
-Herein lies the scripts for the automated generation of digital 
+Herein lies a tool for the automated generation of digital 
 objects based on the digital signatures documented in the PRONOM database 
 maintained by The National Archives, UK. 
 
