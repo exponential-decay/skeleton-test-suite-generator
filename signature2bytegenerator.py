@@ -9,6 +9,8 @@ component_list = []
 
 open_syntax = ['{', '(', '[', '?', '*']
 
+fillbyte=-1
+
 def check_syntax(signature, syntax_list):
 	for i in syntax_list:
 		if signature.find(i) > -1: 
@@ -16,7 +18,10 @@ def check_syntax(signature, syntax_list):
 
 def create_bytes(no):
 	for i in range(no):
-		component_list.append(hex(random.randint(0, 255)).replace('0x', '').zfill(2).replace('L', ''))
+		if fillbyte=='Random':
+			component_list.append(hex(random.randint(0, 255)).replace('0x', '').zfill(2).replace('L', ''))
+		else:
+			component_list.append(hex(fillbyte).replace('0x', '').zfill(2).replace('L', ''))
 	return True
 
 def process_curly(syn):
@@ -122,7 +127,13 @@ def process_signature(signature):
 	else:
 		component_list.append(signature)
 
-def map_signature(bofoffset, signature, eofoffset):
+def map_signature(bofoffset, signature, eofoffset, fillvalue=-1):
+	
+	if fillvalue < 0 or fillvalue > 255:
+		global fillbyte
+		fillbyte = 'Random'
+	else:
+		fillbyte = fillvalue
 	
 	global component_list
 	if component_list:

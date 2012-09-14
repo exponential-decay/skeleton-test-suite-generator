@@ -30,7 +30,7 @@ class FileWriter:
 	def write_header(self, pos, min, max, seq):
 		
 		self.nt_file.seek(0)	
-		bof_sequence = sig2map.map_signature(min, seq, 0)
+		bof_sequence = sig2map.map_signature(min, seq, 0, 0)
 		
 		for x in bof_sequence:
 			try:
@@ -46,7 +46,7 @@ class FileWriter:
 	def write_footer(self, pos, min, max, seq):
 	
 		self.nt_file.seek(0,2)				# seek to end of file
-		eof_sequence = sig2map.map_signature(0, seq, min)
+		eof_sequence = sig2map.map_signature(0, seq, min, 0)
 		
 		for x in eof_sequence:
 			try:
@@ -60,7 +60,7 @@ class FileWriter:
 	def write_var(self, pos, min, max, seq):
 		
 		self.nt_file.seek(self.boflen)
-		var_sequence = sig2map.map_signature(10, seq, 10)		#padding sequence
+		var_sequence = sig2map.map_signature(10, seq, 10, 0)		#padding sequence
 		
 		for x in var_sequence:
 			try:
