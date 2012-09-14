@@ -3,6 +3,7 @@ import os
 import sys
 import signature2bytegenerator as sig2map
 import ConfigParser
+from io import BytesIO
 
 class FileWriter:
 
@@ -39,6 +40,8 @@ class FileWriter:
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
 		
+		self.detect_write_issues(self.BOF)
+		
 		self.nt_file.seek(0)	
 		bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
 		
@@ -51,11 +54,12 @@ class FileWriter:
 				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
-		self.detect_write_issues(self.BOF)
 		self.bof_written = True
 	
 	# Write EOF sequence to file
 	def write_footer(self, pos, min, max, seq):
+	
+		self.detect_write_issues(self.EOF)
 	
 		self.nt_file.seek(0,2)				# seek to end of file
 		eof_sequence = sig2map.map_signature(0, seq, min, self.fillbyte)
@@ -68,14 +72,19 @@ class FileWriter:
 			except:
 				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')
 
-		self.detect_write_issues(self.EOF)
 		self.eof_written = True		
-		
+	
 	# Write variable sequences to file	
 	def write_var(self, pos, min, max, seq):
 		
+		self.detect_write_issues(self.VAR)
+		
 		self.nt_file.seek(self.boflen)
 		var_sequence = sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
+		
+		tmpread = False
+		if self.eof_written == True:		# read eof into tmp and re-write
+			tmpread = self.write_var_with_eof()
 		
 		for x in var_sequence:
 			try:
@@ -85,7 +94,9 @@ class FileWriter:
 			except:
 				sys.stderr.write("VAR Signature not mapped: " + seq + '\n\n')	
 		
-		self.detect_write_issues(self.VAR)
+		if tmpread == True:
+			self.nt_file.write(self.tmpbio.getvalue())
+		
 		self.var_written = True
 	
 	# Create a new file
@@ -101,22 +112,32 @@ class FileWriter:
 		self.bof_written = False
 		self.var_written = False
 		self.eof_written = False
-	
+
+	# we can attempt to write a var sequence with EOF already written
+	# by creating a tmp location for the EOF data while we write the VAR out
+	def write_var_with_eof(self):
+		self.nt_file.close()
+		self.nt_file = open(self.nt_string, 'r+b')	# consider default mode?
+		self.nt_file.seek(self.boflen)
+		self.tmpbio = BytesIO(self.nt_file.read())
+		self.nt_file.seek(self.boflen)
+		return True
+
 	# The ordering of sequences in the PRONOM database may prevent the
 	# successful generation of a skeleton file. Detect these issues and
 	# provide feedback to users as a warning.
 	def detect_write_issues(self, POS):
 		
-		error_str = "File generation error (" + self.puid_str + "): "
+		error_str = "File generation issue (" + self.puid_str + "): "
 		
 		if POS == self.BOF:
 			if self.bof_written == True:
-				sys.stderr.write(error_str + "Attempting to write BOF with BOF written." + "\n")
+				sys.stderr.write("WARNING: " + error_str + "Attempting to write BOF with BOF written." + "\n")
 		elif POS == self.EOF:
 			if self.eof_written == True:
-				sys.stderr.write(error_str + "Attempting to write EOF with EOF written." + "\n")
+				sys.stderr.write("WARNING: " + error_str + "Attempting to write EOF with EOF written." + "\n")
 		elif POS == self.VAR:
 			if self.var_written == True:
-				sys.stderr.write(error_str + "Attempting to write VAR with VAR written." + "\n")
+				sys.stderr.write("WARNING: " + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write(error_str + "Attempting to write VAR with EOF written." + "\n")
+				sys.stderr.write("INFO: " + error_str + "Attempting to write VAR with EOF written." + "\n")
