@@ -66,6 +66,8 @@ non-prototypical output of this generator and the test-suite henceforth.
 * Understand what do we need to do with multiple combinations of byte 
 sequences - currently we always *turn-left*.  
 
+* Unit tests for signature2bytegenerator.py and filewriter.py as a priority.
+
 ###License
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
