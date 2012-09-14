@@ -36,6 +36,8 @@ def main():
 
 	#print script execution time...
 	sys.stdout.write('Skeleton suite generation time:    ' + str(time.clock() - t0) + 's' + '\n')
+	
+	#print script stats
 	stats = fmtxmlextractor.get_stats()
 	for value in stats:
 		sys.stdout.write(value + str(stats[value]) + '\n')
