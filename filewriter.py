@@ -26,6 +26,10 @@ class FileWriter:
 		self.nt_string = 0 	#triple file path...
 		self.boflen = 0		#length of the bof sequence after writing
 		
+		self.BOF=1	# enum-esque vars to help check already written sequences
+		self.VAR=2
+		self.EOF=3
+		
 		try:
 			self.fillbyte = config.getint('runtime', 'fillbyte')
 		except ValueError as (strerror):
@@ -47,6 +51,8 @@ class FileWriter:
 				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
 
 		self.boflen = self.nt_file.tell()
+		self.detect_write_issues(self.BOF)
+		self.bof_written = True
 	
 	# Write EOF sequence to file
 	def write_footer(self, pos, min, max, seq):
@@ -60,7 +66,10 @@ class FileWriter:
 				for y in s:
 					self.nt_file.write(chr(y))
 			except:
-				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')		
+				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')
+
+		self.detect_write_issues(self.EOF)
+		self.eof_written = True		
 		
 	# Write variable sequences to file	
 	def write_var(self, pos, min, max, seq):
@@ -75,6 +84,9 @@ class FileWriter:
 					self.nt_file.write(chr(y))
 			except:
 				sys.stderr.write("VAR Signature not mapped: " + seq + '\n\n')	
+		
+		self.detect_write_issues(self.VAR)
+		self.var_written = True
 	
 	# Create a new file
 	def write_file(self, puid, puid_no, sigID, value, ext):
@@ -82,3 +94,29 @@ class FileWriter:
 		self.puid_no = puid_no
 		if os.path.exists(self.nt_string) == False:
 			self.nt_file = open(self.nt_string, 'wb')
+
+		self.puid_str = puid + '/' + str(self.puid_no)		
+	
+		# reset vars to ensure we know what sequences have been written
+		self.bof_written = False
+		self.var_written = False
+		self.eof_written = False
+	
+	# The ordering of sequences in the PRONOM database may prevent the
+	# successful generation of a skeleton file. Detect these issues and
+	# provide feedback to users as a warning.
+	def detect_write_issues(self, POS):
+		
+		error_str = "File generation error (" + self.puid_str + "): "
+		
+		if POS == self.BOF:
+			if self.bof_written == True:
+				sys.stderr.write(error_str + "Attempting to write BOF with BOF written." + "\n")
+		elif POS == self.EOF:
+			if self.eof_written == True:
+				sys.stderr.write(error_str + "Attempting to write EOF with EOF written." + "\n")
+		elif POS == self.VAR:
+			if self.var_written == True:
+				sys.stderr.write(error_str + "Attempting to write VAR with VAR written." + "\n")
+			if self.eof_written == True:
+				sys.stderr.write(error_str + "Attempting to write VAR with EOF written." + "\n")
