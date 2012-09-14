@@ -44,7 +44,11 @@ class FileWriter:
 		
 		self.nt_file.seek(0)	
 		bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
-		
+
+		tmpread = False
+		if self.eof_written == True:		# read eof into tmp and re-write
+			tmpread = self.write_seq_with_eof()
+
 		for x in bof_sequence:
 			try:
 				s = map(ord, x.decode('hex'))
@@ -55,6 +59,9 @@ class FileWriter:
 
 		self.boflen = self.nt_file.tell()
 		self.bof_written = True
+
+		if tmpread == True:
+			self.nt_file.write(self.tmpbio.getvalue())
 	
 	# Write EOF sequence to file
 	def write_footer(self, pos, min, max, seq):
@@ -84,7 +91,7 @@ class FileWriter:
 		
 		tmpread = False
 		if self.eof_written == True:		# read eof into tmp and re-write
-			tmpread = self.write_var_with_eof()
+			tmpread = self.write_seq_with_eof()
 		
 		for x in var_sequence:
 			try:
@@ -115,7 +122,7 @@ class FileWriter:
 
 	# we can attempt to write a var sequence with EOF already written
 	# by creating a tmp location for the EOF data while we write the VAR out
-	def write_var_with_eof(self):
+	def write_seq_with_eof(self):
 		self.nt_file.close()
 		self.nt_file = open(self.nt_string, 'r+b')	# consider default mode?
 		self.nt_file.seek(self.boflen)
@@ -133,6 +140,8 @@ class FileWriter:
 		if POS == self.BOF:
 			if self.bof_written == True:
 				sys.stderr.write("WARNING: " + error_str + "Attempting to write BOF with BOF written." + "\n")
+			if self.eof_written == True:
+				sys.stderr.write("INFO:    " + error_str + "Attempting to write BOF with EOF written." + "\n")
 		elif POS == self.EOF:
 			if self.eof_written == True:
 				sys.stderr.write("WARNING: " + error_str + "Attempting to write EOF with EOF written." + "\n")
