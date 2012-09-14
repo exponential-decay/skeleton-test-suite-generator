@@ -120,12 +120,12 @@ class FileWriter:
 		self.var_written = False
 		self.eof_written = False
 
-	# we can attempt to write a var sequence with EOF already written
+	# we can attempt to write a var or BOF sequence with EOF already written
 	# by creating a tmp location for the EOF data while we write the VAR out
 	def write_seq_with_eof(self):
 		self.nt_file.close()
 		self.nt_file = open(self.nt_string, 'r+b')	# consider default mode?
-		self.nt_file.seek(self.boflen)
+		self.nt_file.seek(self.boflen)	# if bof written > zero : will simply be zero
 		self.tmpbio = BytesIO(self.nt_file.read())
 		self.nt_file.seek(self.boflen)
 		return True
