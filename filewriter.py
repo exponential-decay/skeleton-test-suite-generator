@@ -41,22 +41,24 @@ class FileWriter:
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
 		
-		grt = "Attempting to correct offset > current BOF file pointer.."
-		eq2 = "Attempting to correct offset == current BOF file" 
-		eq3 = "pointer, so writing after.."
+		grt1 = "Attempting to correct: offset > current BOF" 
+		grt2 = "file pointer.."
+		eq2  = "Attempting to correct: offset == zero so" 
+		eq3  = "writing after..."
 		
 		self.detect_write_issues(self.BOF)
 		bof_sequence = ''
 		if self.bof_written == True:
 			if int(min) > int(self.boflen):
-				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(grt, 20, ' ') + '\n')
+				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(grt1, 20, ' ') + '\n')
+				sys.stderr.write(string.ljust(" ", 16, ' ') + string.rjust(grt2, 20, ' ') + '\n')
 				self.nt_file.seek(self.boflen)
 				mint = int(min) - int(self.boflen)
 				bof_sequence = sig2map.map_signature(mint, seq, 0, self.fillbyte)
 			elif int(min) == 0:	# if second sequence is zero may be error in PRONOM
 										# so write after BOF to not overwrite anything
 				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq2, 20, ' ') + '\n')
-				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq3, 20, ' ') + '\n')
+				sys.stderr.write(string.ljust(" ", 18, ' ') + string.rjust(eq3, 20, ' ') + '\n')
 				self.nt_file.seek(self.boflen)	
 				bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
 		else:
@@ -165,6 +167,6 @@ class FileWriter:
 				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write EOF with EOF written." + "\n")
 		elif POS == self.VAR:
 			if self.var_written == True:
-				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
+				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
 				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with EOF written." + "\n")
