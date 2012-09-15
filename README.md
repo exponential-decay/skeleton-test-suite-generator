@@ -92,7 +92,9 @@ sequences - currently we always *turn-left*.
 
 * Together understand if we can adapt this approach for the UNIX File utility
 
-* Talk about this test suite and approach and help to understand how to refine it!
+* Talk about this tool and potential approach and help to understand how to refine it!
+
+* Sit tight as we build an infrastructure to host the *suite* itself online. 
 
 ###License
 
