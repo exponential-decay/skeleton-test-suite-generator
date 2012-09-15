@@ -41,7 +41,7 @@ to identification engine do not impact identification capability.
 * Test the stability of signature files over time.
 
 Other benefits include a small footprint - zipped the suite is just over 
-*500kb* in size. 
+*160kb* in size. 
 
 Does not suffer issues relating to IPR and copyright. The suite and 
 generator tool, licensed under CC BY-SA (see below).
@@ -85,6 +85,14 @@ non-prototypical output of this generator and the test-suite henceforth.
 sequences - currently we always *turn-left*.  
 
 * Unit tests for signature2bytegenerator.py and filewriter.py as a priority.
+
+###For the community TODO
+
+* Incorporate suite into unit tests for DROID and FIDO
+
+* Together understand if we can adapt this approach for the UNIX File utility
+
+* Talk about this test suite and approach and help to understand how to refine it!
 
 ###License
 
