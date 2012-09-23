@@ -27,6 +27,7 @@ class FileWriter:
 		self.puid_no = 0		#to hold the puid number we're looking at
 		self.nt_string = 0 	#triple file path...
 		self.boflen = 0		#length of the bof sequence after writing
+		self.var_pos = 0		#placeholder for var sequence pointer if written
 		
 		self.BOF=1	# enum-esque vars to help check already written sequences
 		self.VAR=2
@@ -106,7 +107,11 @@ class FileWriter:
 		
 		self.detect_write_issues(self.VAR)
 		
-		self.nt_file.seek(self.boflen)
+		if self.var_written == False:
+			self.var_pos = self.boflen
+			self.var_written = True
+
+		self.nt_file.seek(self.var_pos)
 		var_sequence = sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
 		
 		tmpread = False
@@ -124,6 +129,7 @@ class FileWriter:
 		if tmpread == True:
 			self.nt_file.write(self.tmpbio.getvalue())
 		
+		self.var_pos = self.nt_file.tell()
 		self.var_written = True
 	
 	# Create a new file
@@ -167,6 +173,6 @@ class FileWriter:
 				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write EOF with EOF written." + "\n")
 		elif POS == self.VAR:
 			if self.var_written == True:
-				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
+				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
 				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with EOF written." + "\n")
