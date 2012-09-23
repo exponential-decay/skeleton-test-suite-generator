@@ -161,18 +161,20 @@ class FileWriter:
 	# provide feedback to users as a warning.
 	def detect_write_issues(self, POS):
 		
-		error_str = "(" + self.puid_str + "): "
+		error_str = string.ljust("(" + self.puid_str + "): ", 13, ' ')
+		info_str = string.ljust("INFO:", 9, ' ')
+		warn_str = string.ljust("WARNING:", 9, ' ')
 		
 		if POS == self.BOF:
 			if self.bof_written == True:
-				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write BOF with BOF written." + "\n")
+				sys.stderr.write(warn_str + error_str + "Attempting to write BOF with BOF written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write BOF with EOF written." + "\n")
+				sys.stderr.write(info_str + error_str + "Attempting to write BOF with EOF written." + "\n")
 		elif POS == self.EOF:
 			if self.eof_written == True:
-				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write EOF with EOF written." + "\n")
+				sys.stderr.write(warn_str + error_str + "Attempting to write EOF with EOF written." + "\n")
 		elif POS == self.VAR:
 			if self.var_written == True:
-				sys.stderr.write("WARNING: " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with VAR written." + "\n")
+				sys.stderr.write(warn_str + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write("INFO:    " + string.ljust(error_str, 13, ' ') + "Attempting to write VAR with EOF written." + "\n")
+				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")
