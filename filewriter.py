@@ -145,6 +145,11 @@ class FileWriter:
 		self.bof_written = False
 		self.var_written = False
 		self.eof_written = False
+		
+		self.boflen = 0	#TODO: Class created for each xml file not each
+								#signature, need to correct this to improve code and
+								#initialization of variables, i.e. handled in
+								#constructor, not artificially elsewhere...
 
 	# we can attempt to write a var or BOF sequence with EOF already written
 	# by creating a tmp location for the EOF data while we write the VAR out
