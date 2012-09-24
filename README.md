@@ -28,7 +28,7 @@ Or:
 
 The scripts take an export of the PRONOM database in XML, extract the 
 internal signature information belonging to each format record and 
-generate the digital objects creating the 'skeleton test suite'. 
+generate the digital objects - creating the 'skeleton test suite'. 
 
 The objects can be used for:
 
