@@ -17,10 +17,14 @@ given the signature:
 
     CAFED00D{4}CAFEBABE(0D|0D0A)
 
-The hex sequence which composes a digital object that will match 
+The hex sequences comprising digital objects that will match 
 this signature in DROID will look like the following:
 
-    CADED00D00000000CAFEBABE0D0A
+    CA FE D0 0D 00 00 00 00 CA FE BA BE 0D
+
+Or:
+
+    CA FE D0 0D 00 00 00 00 CA FE BA BE 0D 0A
 
 The scripts take an export of the PRONOM database in XML, extract the 
 internal signature information belonging to each format record and 
