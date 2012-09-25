@@ -3,7 +3,7 @@
 
 Herein lies a tool for the automated generation of digital 
 objects based on the digital signatures documented in the PRONOM database 
-maintained by The National Archives, UK (PRONOM Data is licensed under the Open
+maintained by The National Archives, UK: PRONOM Data is licensed under the Open
 Government Licence (OGL): http://www.nationalarchives.gov.uk/doc/open-government-licence/ 
 
 The skeleton-test-suite-generator serves to fill the gap that exists whereby 
