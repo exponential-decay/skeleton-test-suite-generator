@@ -29,7 +29,7 @@ def create_bytes(no):
 		if fillbyte=='Random':
 			component_list.append(hex(random.randint(0, 255)).replace('0x', '').zfill(2).replace('L', ''))
 		else:
-			component_list.append(hex(fillbyte).replace('0x', '').zfill(2).replace('L', ''))
+			component_list.append(hex(fillbyte).replace('0x', '').zfill(2).replace('L', ''))			
 	return True
 
 def process_curly(syn):
@@ -127,7 +127,9 @@ def process_signature(signature):
 		i = 0
 		for x in signature:		
 			if not x.isalnum():		# are all alphanumeric
-				component_list.append(signature[0:i])
+				element = signature[0:i]
+				if element != '':		# may not be anything to append e.g. '??ab'
+					component_list.append(element)
 				signature = detailed_check(signature[i:])
 				break
 			i+=1
