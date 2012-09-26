@@ -61,6 +61,19 @@ class Sig2ByteGeneratorTests(TestCase):
 		
 		del sig2map.component_list[:]
 		
+	def test_map_signature(self):
+							
+		signature = "deadbeef{3}cafebabe??cafed00d{3-10}bbadf00d[aaaa:abbb]baadf00d[!facefeed]deadfa11*0DEFACED(AA|BB)DEFECA7E(CCFF|DDDD|EEEEEE)D15EA5ED??00BAB10C????DEADFEED"
+		
+		result_list = ['deadbeef','00','00','00','cafebabe','00','cafed00d'
+					,'00','00','00','00','00','00','bbadf00d','ab32','baadf00d'
+					,'f9', 'cd', 'fd', 'ec','deadfa11','00','00','00','00','00','00','00','00','00','00'
+					,'00','00','00','00','00','00','00','00','00','00','0DEFACED','aa','DEFECA7E','cc','ff'
+					,'D15EA5ED','00','00BAB10C','00','00','DEADFEED']
+		
+		sig2map.map_signature(0, signature, 0, 0)
+		self.assertEqual(result_list, sig2map.component_list)
+		
 def main():
 	suite = TestLoader().loadTestsFromTestCase(Sig2ByteGeneratorTests)
 	TextTestRunner(verbosity=2).run(suite)
