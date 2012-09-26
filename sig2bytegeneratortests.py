@@ -3,6 +3,20 @@ import signature2bytegenerator as sig2map
 
 class Sig2ByteGeneratorTests(TestCase):
 
+	def test_set_fillbyte(self):
+	
+		# check random is set correctly > 255
+		self.assertEqual('Random', sig2map.set_fillbyte(256))
+		
+		# check random is set correctly < 255
+		self.assertEqual('Random', sig2map.set_fillbyte(-1))		
+	
+		# check specific value
+		self.assertEqual(255, sig2map.set_fillbyte(255))
+		
+		# check we handly text i.e. set to random
+		self.assertEqual('Random', sig2map.set_fillbyte("xyz"))
+	
 	# check function finds syntax values: ['{', '(', '[', '?', '*']
 	def test_check_syntax(self):
 	

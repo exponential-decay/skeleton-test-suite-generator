@@ -17,6 +17,7 @@ def set_fillbyte(fillvalue):
 		fillbyte = 'Random'
 	else:
 		fillbyte = fillvalue
+	return fillbyte
 
 def check_syntax(signature):
 	for i in open_syntax:
