@@ -1,4 +1,4 @@
-from unittest import main, TestCase
+from unittest import TestCase, TestLoader, TextTestRunner
 import signature2bytegenerator as sig2map
 
 class Sig2ByteGeneratorTests(TestCase):
@@ -47,5 +47,9 @@ class Sig2ByteGeneratorTests(TestCase):
 		
 		del sig2map.component_list[:]
 		
+def main():
+	suite = TestLoader().loadTestsFromTestCase(Sig2ByteGeneratorTests)
+	TextTestRunner(verbosity=2).run(suite)
+	
 if __name__ == "__main__":
-    main()
+	main()
