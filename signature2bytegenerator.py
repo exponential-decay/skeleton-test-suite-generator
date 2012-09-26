@@ -11,6 +11,13 @@ open_syntax = ['{', '(', '[', '?', '*']
 
 fillbyte=-1
 
+def set_fillbyte(fillvalue):
+	if fillvalue < 0 or fillvalue > 255:
+		global fillbyte
+		fillbyte = 'Random'
+	else:
+		fillbyte = fillvalue
+
 def check_syntax(signature):
 	for i in open_syntax:
 		if signature.find(i) > -1: 
@@ -129,11 +136,7 @@ def process_signature(signature):
 
 def map_signature(bofoffset, signature, eofoffset, fillvalue=-1):
 	
-	if fillvalue < 0 or fillvalue > 255:
-		global fillbyte
-		fillbyte = 'Random'
-	else:
-		fillbyte = fillvalue
+	set_fillbyte(fillvalue)
 	
 	global component_list
 	if component_list:
