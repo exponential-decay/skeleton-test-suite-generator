@@ -3,9 +3,6 @@ import signature2bytegenerator as sig2map
 
 class Sig2ByteGeneratorTests(TestCase):
 
-	#def setUp(self):
-	#	self.txt = 'txt'
-
 	# check function finds syntax values: ['{', '(', '[', '?', '*']
 	def test_check_syntax(self):
 	
