@@ -11,8 +11,8 @@ open_syntax = ['{', '(', '[', '?', '*']
 
 fillbyte=-1
 
-def check_syntax(signature, syntax_list):
-	for i in syntax_list:
+def check_syntax(signature):
+	for i in open_syntax:
 		if signature.find(i) > -1: 
 			return True
 
@@ -115,7 +115,7 @@ def detailed_check(signature):
 	
 def process_signature(signature):
 
-	if check_syntax(signature, open_syntax) == True:
+	if check_syntax(signature) == True:
 		i = 0
 		for x in signature:		
 			if not x.isalnum():		# are all alphanumeric
