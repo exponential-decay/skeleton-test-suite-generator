@@ -43,7 +43,6 @@ def handler(puid_type, number_path_pair):
 	global record_count, fmt_no, fr
 	record_count += 1
 	fmt_no = number_path_pair[0]
-	fr = filewriter.FileWriter(puid_type)	#create file writing object
 	
 	file_no = number_path_pair[0]
 	file_name = number_path_pair[1]
@@ -82,9 +81,11 @@ def handler(puid_type, number_path_pair):
 
 # Forward data to file writer object to create skeleton suite files
 def handle_output(puid_type, puid_str, file_no, int_sig_no):
+
 	sigID = 0
 	for x in content_list:
 		if x[0] == 'Internal Signature ID':
+			fr = filewriter.FileWriter(puid_type)	#create file writing object
 			if x[1] != sigID:
 				sigID = x[1]
 				if content_list[1][0] == 'File Extension':

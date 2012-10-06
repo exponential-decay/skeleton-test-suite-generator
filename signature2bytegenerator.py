@@ -1,7 +1,3 @@
-# TODO: Create a class out of these functions, especially for use of
-# constructor, destructor to handle the cleardown of globals, specifically
-# the component_list as this needs clearing manually at beginning of script.
-
 import binascii
 import random
 
@@ -143,10 +139,6 @@ class Sig2ByteGenerator:
 	def map_signature(self, bofoffset, signature, eofoffset, fillvalue=-1):
 		
 		self.set_fillbyte(fillvalue)
-		
-		global component_list
-		if self.component_list:
-			self.component_list = []
 
 		if bofoffset != 'null':
 			self.create_bytes(int(bofoffset))		# dangerous? need to check type?
