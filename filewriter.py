@@ -23,14 +23,7 @@ class FileWriter:
 				os.makedirs(self.newtriplesdir)
 			except OSError as (errno, strerror):
 				sys.stderr.write("OS error({0}): {1}".format(errno, strerror) + '\n')
-		
-		#variables to hold details about individual triple files
-		self.nt_file = 0		#to hold file pointer
-		self.puid_no = 0		#to hold the puid number we're looking at
-		self.nt_string = 0 	#triple file path...
-		self.boflen = 0		#length of the bof sequence after writing
-		self.var_pos = 0		#placeholder for var sequence pointer if written
-		
+			
 		self.BOF=1	# enum-esque vars to help check already written sequences
 		self.VAR=2
 		self.EOF=3
@@ -143,15 +136,11 @@ class FileWriter:
 
 		self.puid_str = puid + '/' + str(self.puid_no)		
 	
-		# reset vars to ensure we know what sequences have been written
+		# Vars to ensure we know what sequences have been written
 		self.bof_written = False
 		self.var_written = False
 		self.eof_written = False
-		
-		self.boflen = 0	#TODO: Class created for each xml file not each
-								#signature, need to correct this to improve code and
-								#initialization of variables, i.e. handled in
-								#constructor, not artificially elsewhere...
+		self.boflen = 0				#init or here, no problem
 
 	# we can attempt to write a var or BOF sequence with EOF already written
 	# by creating a tmp location for the EOF data while we write the VAR out
