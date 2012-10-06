@@ -2,7 +2,7 @@ from urlparse import urlparse
 import os
 import sys
 import string
-import signature2bytegenerator as sig2map
+import signature2bytegenerator
 import ConfigParser
 from io import BytesIO
 
@@ -13,6 +13,8 @@ class FileWriter:
 	
 		config = ConfigParser.RawConfigParser()
 		config.read('skeletonsuite.cfg') 
+		
+		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
 		self.newtriplesdir = os.getcwd() + "//" + config.get('locations', 'output') + "//" + puid_type + '//'
 
@@ -55,16 +57,16 @@ class FileWriter:
 				sys.stderr.write(string.ljust(" ", 16, ' ') + string.rjust(grt2, 20, ' ') + '\n')
 				self.nt_file.seek(self.boflen)
 				mint = int(min) - int(self.boflen)
-				bof_sequence = sig2map.map_signature(mint, seq, 0, self.fillbyte)
+				bof_sequence = self.sig2map.map_signature(mint, seq, 0, self.fillbyte)
 			elif int(min) == 0:	# if second sequence is zero may be error in PRONOM
 										# so write after BOF to not overwrite anything
 				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq2, 20, ' ') + '\n')
 				sys.stderr.write(string.ljust(" ", 18, ' ') + string.rjust(eq3, 20, ' ') + '\n')
 				self.nt_file.seek(self.boflen)	
-				bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
+				bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
 		else:
 			self.nt_file.seek(0)	
-			bof_sequence = sig2map.map_signature(min, seq, 0, self.fillbyte)
+			bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
 			
 		tmpread = False
 		if self.eof_written == True:		# read eof into tmp and re-write
@@ -90,7 +92,7 @@ class FileWriter:
 		self.detect_write_issues(self.EOF)
 	
 		self.nt_file.seek(0,2)				# seek to end of file
-		eof_sequence = sig2map.map_signature(0, seq, min, self.fillbyte)
+		eof_sequence = self.sig2map.map_signature(0, seq, min, self.fillbyte)
 		
 		for x in eof_sequence:
 			try:
@@ -112,7 +114,7 @@ class FileWriter:
 			self.var_written = True
 
 		self.nt_file.seek(self.var_pos)
-		var_sequence = sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
+		var_sequence = self.sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
 		
 		tmpread = False
 		if self.eof_written == True:		# read eof into tmp and re-write
