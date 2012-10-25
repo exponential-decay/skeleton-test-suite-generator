@@ -13,8 +13,6 @@ class FileWriter:
 	
 		config = ConfigParser.RawConfigParser()
 		config.read('skeletonsuite.cfg') 
-		
-		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
 		self.newtriplesdir = os.getcwd() + "//" + config.get('locations', 'output') + "//" + puid_type + '//'
 
@@ -36,6 +34,7 @@ class FileWriter:
 	
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
+		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		
 		grt1 = "Attempting to correct: offset > current BOF" 
 		grt2 = "file pointer.."
@@ -81,7 +80,7 @@ class FileWriter:
 	
 	# Write EOF sequence to file
 	def write_footer(self, pos, min, max, seq):
-	
+		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		self.detect_write_issues(self.EOF)
 	
 		self.nt_file.seek(0,2)				# seek to end of file
@@ -99,7 +98,7 @@ class FileWriter:
 	
 	# Write variable sequences to file	
 	def write_var(self, pos, min, max, seq):
-		
+		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		self.detect_write_issues(self.VAR)
 		
 		if self.var_written == False:
