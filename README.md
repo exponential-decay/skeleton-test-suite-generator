@@ -12,7 +12,7 @@ evaluation of format identification tools and techniques. The tool
 should be used to complement a methodology whereby skeleton 
 files are also generated manually by signature developers. 
 
-The research paper this work led to can be found **http://www.ijdc.net/index.php/ijdc/article/view/8.1.120**
+The research paper this work led to can be found here: **http://www.ijdc.net/index.php/ijdc/article/view/8.1.120**
 
 ### Technical
 
