@@ -12,6 +12,10 @@ evaluation of format identification tools and techniques. The tool
 should be used to complement a methodology whereby skeleton 
 files are also generated manually by signature developers. 
 
+The research paper this work led to can be found here: **http://www.ijdc.net/index.php/ijdc/article/view/8.1.120**
+
+### Technical
+
 The tool takes a signature specified for a digital object in PRONOM and 
 constructs a digital object that will match its footprint. For example, 
 given the signature:
