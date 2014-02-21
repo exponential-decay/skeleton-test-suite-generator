@@ -79,6 +79,13 @@ character value for the requested fill values or &lt;0 or &gt;255 for random byt
 
     python skeletongenerator.py --version
 
+###Testing reports
+
+I completed two reports on the Skeleton Test Suite back in 2012/2013. They document
+testing of the files on DROID and explore reasons why some files do or do not work.
+The reports and links to the test-suites used for testing can be found on the repo
+wiki, here: https://github.com/exponential-decay/skeleton-test-suite-generator/wiki
+
 ###TODO
 
 * Handle multiples of sequence types, e.g. multiple non-colliding BOF 
