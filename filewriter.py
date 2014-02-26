@@ -106,7 +106,7 @@ class FileWriter:
 			self.var_written = True
 
 		self.nt_file.seek(self.var_pos)
-		var_sequence = self.sig2map.map_signature(10, seq, 10, self.fillbyte)		#padding sequence
+		var_sequence = self.sig2map.map_signature(min, seq, max, self.fillbyte)		#padding sequence
 		
 		tmpread = False
 		if self.eof_written == True:		# read eof into tmp and re-write
