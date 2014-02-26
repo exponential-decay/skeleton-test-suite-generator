@@ -95,12 +95,18 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 				#New internal sig, new file - create
 				fr.write_file(puid_type, file_no, sigID, puid_str, ext)
 		if x[0] == 'Byte sequence':
+
+			pos = x[1][0]
+			min = x[1][1]
+			max = x[1][2]
+			seq = x[1][3]
+
 			if x[1][0] == 'Absolute from BOF':
-				fr.write_header(x[1][0],x[1][1],x[1][2],x[1][3])
+				fr.write_header(pos, min, max, seq)
 			if x[1][0] == 'Absolute from EOF':
-				fr.write_footer(x[1][0],x[1][1],x[1][2],x[1][3])
+				fr.write_footer(pos, min, max, seq)
 			if x[1][0] == 'Variable':
-				fr.write_var(x[1][0],x[1][1],x[1][2],x[1][3])
+				fr.write_var(pos, min, max, seq)
 
 # Run through XML elements when we get to a node element fwd to node handler
 def extract(puid_type, file_no, xml_iter, parent_node):
