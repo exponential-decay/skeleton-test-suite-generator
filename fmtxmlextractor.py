@@ -112,9 +112,9 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 
 			if pos == 'Absolute from BOF':
 				fr.write_header(pos, min, max, seq)
-			if x[1][0] == 'Absolute from EOF':
+			if pos == 'Absolute from EOF':
 				fr.write_footer(pos, min, max, seq)
-			if x[1][0] == 'Variable':
+			if pos == 'Variable':
 				fr.write_var(pos, min, max, seq)
 
 # Run through XML elements when we get to a node element fwd to node handler
