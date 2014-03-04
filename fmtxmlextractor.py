@@ -106,8 +106,11 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 
 			if max == 'null':
 				max = 0
+				
+			min = int(min)
+			max = int(max)
 
-			if x[1][0] == 'Absolute from BOF':
+			if pos == 'Absolute from BOF':
 				fr.write_header(pos, min, max, seq)
 			if x[1][0] == 'Absolute from EOF':
 				fr.write_footer(pos, min, max, seq)
