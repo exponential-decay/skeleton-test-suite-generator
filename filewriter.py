@@ -36,10 +36,10 @@ class FileWriter:
 	def write_header(self, pos, min, max, seq):
 		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		
-		grt1 = "Attempting to correct: offset > current BOF" 
-		grt2 = "file pointer.."
-		eq2  = "Attempting to correct: offset == zero so" 
-		eq3  = "writing after..."
+		grt1 = '' #"Attempting to correct: offset > current BOF" 
+		grt2 = '' #"file pointer.."
+		eq2  = '' #"Attempting to correct: offset == zero so" 
+		eq3  = '' #"writing after..."
 		
 		self.detect_write_issues(self.BOF)
 		bof_sequence = ''
@@ -160,7 +160,7 @@ class FileWriter:
 		info_str = string.ljust("INFO:", 9, ' ')
 		warn_str = string.ljust("WARNING:", 9, ' ')
 		
-		if POS == self.BOF:
+		'''if POS == self.BOF:
 			if self.bof_written == True:
 				sys.stderr.write(warn_str + error_str + "Attempting to write BOF with BOF written." + "\n")
 			if self.eof_written == True:
@@ -172,4 +172,4 @@ class FileWriter:
 			if self.var_written == True:
 				sys.stderr.write(warn_str + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")
+				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")'''
