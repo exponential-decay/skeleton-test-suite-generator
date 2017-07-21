@@ -1,4 +1,4 @@
-#DROID Skeleton Test Suite Generator *(skeleton-test-suite-generator)*
+DROID Skeleton Test Suite Generator *(skeleton-test-suite-generator)*
 ---
 
 Herein lies a tool for the automated generation of digital 
@@ -61,7 +61,7 @@ will not generate correctly. While this can be corrected by the team
 working on PRONOM, these are legitimate sequences that should be handled 
 by the tool. 
 
-###HOWTO
+### HOWTO
 
     python skeletongenerator.py
     
@@ -79,14 +79,14 @@ character value for the requested fill values or &lt;0 or &gt;255 for random byt
 
     python skeletongenerator.py --version
 
-###Testing reports
+### Testing reports
 
 I completed two reports on the Skeleton Test Suite back in 2012/2013. They document
 testing of the files on DROID and explore reasons why some files do or do not work.
 The reports and links to the test-suites used for testing can be found on the repo
 wiki, here: https://github.com/exponential-decay/skeleton-test-suite-generator/wiki
 
-###TODO
+### TODO
 
 * Handle multiples of sequence types, e.g. multiple non-colliding BOF 
 sequences.
@@ -102,7 +102,7 @@ sequences - currently we always *turn-left*.
 
 * Unit tests for signature2bytegenerator.py and filewriter.py as a priority.
 
-###For the community TODO
+### For the community TODO
 
 * Incorporate suite into unit tests for DROID and FIDO
 
@@ -112,7 +112,7 @@ sequences - currently we always *turn-left*.
 
 * Sit tight as we build an infrastructure to host the *suite* itself online. 
 
-###License
+### License
 
 Copyright (c) 2012 Ross Spencer
 
