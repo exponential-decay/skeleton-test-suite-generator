@@ -34,6 +34,7 @@ class FileWriter:
 	
 	# Write BOF sequence to file
 	def write_header(self, pos, min, max, seq):
+
 		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		
 		grt1 = '' #"Attempting to correct: offset > current BOF" 
@@ -44,19 +45,29 @@ class FileWriter:
 		self.detect_write_issues(self.BOF)
 		bof_sequence = ''
 		if self.bof_written == True:
+
+			# the sequences are aligned okay...
 			if int(min) > int(self.boflen):
-				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(grt1, 20, ' ') + '\n')
-				sys.stderr.write(string.ljust(" ", 16, ' ') + string.rjust(grt2, 20, ' ') + '\n')
+				sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(grt1, 20, " ") + '\n')
+				sys.stderr.write(string.ljust(" ", 16, " ") + string.rjust(grt2, 20, " ") + '\n')
 				self.nt_file.seek(self.boflen)
 				mint = int(min) - int(self.boflen)
 				bof_sequence = self.sig2map.map_signature(mint, seq, 0, self.fillbyte)
-			elif int(min) == 0:	# if second sequence is zero may be error in PRONOM
-										# so write after BOF to not overwrite anything
-				sys.stderr.write(string.ljust(" ", 22, ' ') + string.rjust(eq2, 20, ' ') + '\n')
-				sys.stderr.write(string.ljust(" ", 18, ' ') + string.rjust(eq3, 20, ' ') + '\n')
+
+			# if second sequence is zero may be error in PRONOM
+			# so write after BOF to not overwrite anything
+			elif int(min) == 0:						
+				sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(eq2, 20, " ") + "\n")
+				sys.stderr.write(string.ljust(" ", 18, " ") + string.rjust(eq3, 20, " ") + "\n")
 				self.nt_file.seek(self.boflen)	
 				bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
+
+			# we might not need this... may fit under min >(=) boflen
+			elif int(min) == int(self.boflen):
+				bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
+
 		else:
+
 			self.nt_file.seek(0)	
 			bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
 			
@@ -79,12 +90,13 @@ class FileWriter:
 			self.nt_file.write(self.tmpbio.getvalue())
 	
 	# Write EOF sequence to file
-	def write_footer(self, pos, min, max, seq):
+	def write_footer(self, pos, min_off, max_off, seq):
+
 		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
 		self.detect_write_issues(self.EOF)
-	
-		self.nt_file.seek(0,2)				# seek to end of file
-		eof_sequence = self.sig2map.map_signature(0, seq, min, self.fillbyte)
+
+		self.nt_file.seek(0 ,2)				# seek to end of file
+		eof_sequence = self.sig2map.map_signature(0, seq, min_off, self.fillbyte)
 		
 		for x in eof_sequence:
 			try:
@@ -95,7 +107,7 @@ class FileWriter:
 				sys.stderr.write("EOF Signature not mapped: " + seq + '\n\n')
 
 		self.eof_written = True		
-	
+
 	# Write variable sequences to file	
 	def write_var(self, pos, min, max, seq):
 		self.sig2map = signature2bytegenerator.Sig2ByteGenerator()	#TODO: New instance or not?
@@ -141,6 +153,8 @@ class FileWriter:
 		self.eof_written = False
 		self.boflen = 0				#init or here, no problem
 
+		return self.puid_str
+
 	# we can attempt to write a var or BOF sequence with EOF already written
 	# by creating a tmp location for the EOF data while we write the VAR out
 	def write_seq_with_eof(self):
@@ -173,3 +187,4 @@ class FileWriter:
 				sys.stderr.write(warn_str + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
 				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")
+

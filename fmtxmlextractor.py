@@ -7,10 +7,26 @@ import filewriter
 import sys
 import re
 
+# Here we're going to create a structure and a list to handle the ordering
+# of Signature byte sequences...
+
+class ByteSequence:
+	fr = ''
+	pos = ''
+	min_off = ''
+	max_off = ''
+	seq = ''
+
+# Order this list to be passed around...
+bytesequences = []
+
+# We also need to know which formats the sequences belong to...
+instancedict = {}
+
 fmt_no = 0					# to be incremented as we create a new uri for each sfw resource
 header_list = []			# To potentially store metadata for these files
 content_list = []			# To store the data we're interested in
-signature_id_name = []	# TMP to store sig id values before adding to content_list
+signature_id_name = []		# TMP to store sig id values before adding to content_list
 
 # TODO: Better way than using these globals? remaining from early prototype
 SEQPOS = 0
@@ -28,9 +44,9 @@ record_count = 0
 files_created = 0
 
 def get_stats():
-	return OrderedDict([	("Number of PRONOM records:          ", record_count), 
-								("Number of formats with Signatures: ", format_sig_count), 
-								("Number of files created:           ", files_created)])
+	return OrderedDict([("Number of PRONOM records:          ", record_count), 
+						("Number of formats with Signatures: ", format_sig_count), 
+						("Number of files created:           ", files_created)])
 
 def reset_sequence_list():
 	global sequence_list
@@ -67,7 +83,8 @@ def handler(puid_type, number_path_pair):
 			
 			puid_str = puid_type + '/' + str(file_no)
 			extract(puid_type, file_no, xml_iter, '')
-			handle_output(puid_type, puid_str, file_no, number_of_internal_signatures)
+
+			fr = handle_output(puid_type, puid_str, file_no, number_of_internal_signatures)
 
 			del header_list[:]
 			del content_list[:]
@@ -79,9 +96,13 @@ def handler(puid_type, number_path_pair):
 	except IOError as (errno, strerror):
 		sys.stderr.write("IO error({0}): {1}".format(errno, strerror) + ' : ' + file_string + '\n')
 
+	global bytesequences
+	bytesequences = sort_sequences(bytesequences)
+	write_signature(bytesequences)
+	bytesequences = []
+
 # Forward data to file writer object to create skeleton suite files
 def handle_output(puid_type, puid_str, file_no, int_sig_no):
-
 	sigID = 0
 	for x in content_list:
 		if x[0] == 'Internal Signature ID':
@@ -92,33 +113,63 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 					ext = content_list[1][1]
 				else:
 					ext = 'nul'
+
 				#New internal sig, new file - create
 				fr.write_file(puid_type, file_no, sigID, puid_str, ext)
+
 		if x[0] == 'Byte sequence':
+			bs = ByteSequence()
 
-			pos = x[1][0]
-			min = x[1][1]
-			max = x[1][2]
-			seq = x[1][3]
+			bs.fr = fr
 
-			if min == 'null':
-				min = 0
+			bs.pos  = x[1][0]
+			min_off = x[1][1]
+			max_off = x[1][2]
+			bs.seq  = x[1][3]
 
-			if max == 'null':
-				max = 0
+			if min_off == 'null':
+				min_off = 0
+
+			if max_off == 'null':
+				max_off = 0
 				
-			min = int(min)
-			max = int(max)
+			bs.min_off = int(min_off)
+			bs.max_off = int(max_off)
 
-			if pos == 'Absolute from BOF':
-				fr.write_header(pos, min, max, seq)
-			if pos == 'Absolute from EOF':
-				fr.write_footer(pos, min, max, seq)
-			if pos == 'Variable':
-				if min > 0:
-					print puid_str + " " + str(min)
-			
-				fr.write_var(pos, min, max, seq)
+			bytesequences.append(bs)
+
+def sort_sequences(bs):
+
+	bof = []
+	eof = []
+	var = []
+
+	for b in bs:
+		if b.pos == 'Absolute from BOF':
+			bof.append(b)
+		if b.pos == 'Absolute from EOF':
+			eof.append(b)
+		if b.pos == 'Variable':
+			var.append(b)
+
+	bof = sorted(bof, key=lambda b: b.min_off)  
+	eof = sorted(eof, key=lambda b: b.min_off, reverse=True)  
+	var = sorted(var, key=lambda b: b.min_off) 
+	
+	bs_new = bof + var + eof
+
+	return bs_new
+
+def write_signature(bs):
+	for b in bs:
+		if b.pos == 'Absolute from BOF':
+			b.fr.write_header(b.pos, b.min_off, b.max_off, b.seq)
+		if b.pos == 'Absolute from EOF':
+			b.fr.write_footer(b.pos, b.min_off, b.max_off, b.seq)
+		if b.pos == 'Variable':
+			#if min_off > 0:
+			#	print puid_str + " " + str(min_off)
+			b.fr.write_var(b.pos, b.min_off, b.max_off, b.seq)
 
 # Run through XML elements when we get to a node element fwd to node handler
 def extract(puid_type, file_no, xml_iter, parent_node):
