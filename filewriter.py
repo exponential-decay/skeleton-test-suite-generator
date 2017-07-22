@@ -69,8 +69,10 @@ class FileWriter:
 				s = map(ord, x.decode('hex'))
 				for y in s:
 					self.nt_file.write(chr(y))
-			except:
-				sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
+			except TypeError as e:
+				print e
+			#	sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
+			#	print x
 
 		self.boflen = self.nt_file.tell()
 		self.bof_written = True
