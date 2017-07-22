@@ -70,9 +70,7 @@ class FileWriter:
 				for y in s:
 					self.nt_file.write(chr(y))
 			except TypeError as e:
-				print e
-			#	sys.stderr.write("BOF Signature not mapped: " + seq + '\n\n')
-			#	print x
+				sys.stderr.write(str(e) + " BOF Signature not mapped: " + seq + "\n")
 
 		self.boflen = self.nt_file.tell()
 		self.bof_written = True
