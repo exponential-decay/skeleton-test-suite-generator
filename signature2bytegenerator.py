@@ -66,8 +66,14 @@ class Sig2ByteGenerator:
 		if syn.find(':') > -1:
 			new_str = syn.split(':')
 			val = (int(new_str[0], 16) + int(new_str[1], 16)) / 2
-			self.component_list.append(hex(val).replace('0x', '').zfill(2).replace('L', ''))
-			
+			hx = hex(val).replace('0x', '').zfill(2).replace('L', '')
+			# this is a hack to solve issue #8 we've never come across it before
+			# but it could conceivably happen again... depends how large the value
+			# is following a colon and if the hex representation is odd numbered
+			if len(hx) % 2 != 0:
+				hx = hex(val).replace('0x', '').zfill(len(hx)+1).replace('L', '')
+			self.component_list.append(hx)
+
 	def sqr_not(self, syn):
 		syn = syn.replace('!', '')
 		s = map(ord, syn.decode('hex'))
@@ -117,24 +123,23 @@ class Sig2ByteGenerator:
 				self.process_thesis(syn)
 			elif check_byte == '*':
 				self.create_bytes(20)
-		
 		return signature[index+1:]
 		
 	def process_signature(self, signature):
-
-		if self.check_syntax(signature) == True:
-			i = 0
-			for x in signature:		
-				if not x.isalnum():		# are all alphanumeric
-					element = signature[0:i]
-					if element != '':		# may not be anything to append e.g. '??ab'
-						self.component_list.append(element)
-					signature = self.detailed_check(signature[i:])
-					break
-				i+=1
-			self.process_signature(signature)
-		else:
-			self.component_list.append(signature)
+		if signature != '':
+			if self.check_syntax(signature) == True:
+				i = 0
+				for x in signature:		
+					if not x.isalnum():		# are all alphanumeric
+						element = signature[0:i]
+						if element != '':		# may not be anything to append e.g. '??ab'
+							self.component_list.append(element)
+						signature = self.detailed_check(signature[i:])
+						break
+					i+=1
+				self.process_signature(signature)
+			else:
+				self.component_list.append(signature)
 
 	def map_signature(self, bofoffset, signature, eofoffset, fillvalue=-1):
 		
