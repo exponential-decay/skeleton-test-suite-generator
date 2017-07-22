@@ -160,7 +160,7 @@ class FileWriter:
 		info_str = string.ljust("INFO:", 9, ' ')
 		warn_str = string.ljust("WARNING:", 9, ' ')
 		
-		'''if POS == self.BOF:
+		if POS == self.BOF:
 			if self.bof_written == True:
 				sys.stderr.write(warn_str + error_str + "Attempting to write BOF with BOF written." + "\n")
 			if self.eof_written == True:
@@ -172,4 +172,4 @@ class FileWriter:
 			if self.var_written == True:
 				sys.stderr.write(warn_str + error_str + "Attempting to write VAR with VAR written." + "\n")
 			if self.eof_written == True:
-				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")'''
+				sys.stderr.write(info_str + error_str + "Attempting to write VAR with EOF written." + "\n")
