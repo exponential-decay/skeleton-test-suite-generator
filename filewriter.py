@@ -48,8 +48,8 @@ class FileWriter:
 
 			# the sequences are aligned okay...
 			if int(min) > int(self.boflen):
-				sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(grt1, 20, " ") + '\n')
-				sys.stderr.write(string.ljust(" ", 16, " ") + string.rjust(grt2, 20, " ") + '\n')
+				#sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(grt1, 20, " ") + '\n')
+				#sys.stderr.write(string.ljust(" ", 16, " ") + string.rjust(grt2, 20, " ") + '\n')
 				self.nt_file.seek(self.boflen)
 				mint = int(min) - int(self.boflen)
 				bof_sequence = self.sig2map.map_signature(mint, seq, 0, self.fillbyte)
@@ -57,8 +57,8 @@ class FileWriter:
 			# if second sequence is zero may be error in PRONOM
 			# so write after BOF to not overwrite anything
 			elif int(min) == 0:						
-				sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(eq2, 20, " ") + "\n")
-				sys.stderr.write(string.ljust(" ", 18, " ") + string.rjust(eq3, 20, " ") + "\n")
+				#sys.stderr.write(string.ljust(" ", 22, " ") + string.rjust(eq2, 20, " ") + "\n")
+				#sys.stderr.write(string.ljust(" ", 18, " ") + string.rjust(eq3, 20, " ") + "\n")
 				self.nt_file.seek(self.boflen)	
 				bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
 
