@@ -143,6 +143,8 @@ class FileWriter:
 		self.nt_string = self.newtriplesdir + puid + "-" + str(puid_no) + "-signature-id-" + sigID + '.' + ext
 		self.puid_no = puid_no
 		if os.path.exists(self.nt_string) == False:
+			#to standard out so as not to clutter error log...
+			sys.stdout.write("Writing " + str(os.path.basename(self.nt_string)) + "\n")
 			self.nt_file = open(self.nt_string, 'wb')
 
 		self.puid_str = puid + '/' + str(self.puid_no)		

@@ -92,6 +92,11 @@ class Sig2ByteGeneratorTests(TestCase):
 		
 		del self.sig2map.component_list[:]
 		
+		signature = "4244{12}0003{6}[!&01]00"
+		result_list = ['4244','00','00','00','00','00','00','00','00','00','00','00','00','0003','00','00','00','00','00','00','00','00']
+		self.sig2map.map_signature(0, signature, 0, 0)
+		self.assertEqual(result_list, self.sig2map.component_list)
+
 def main():
 	suite = TestLoader().loadTestsFromTestCase(Sig2ByteGeneratorTests)
 	TextTestRunner(verbosity=2).run(suite)

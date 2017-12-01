@@ -61,6 +61,28 @@ class Sig2ByteGenerator:
 		elif syn.find('!') > -1:
 			self.sqr_not(syn)
 
+	# TODO: Copy and paste from container work... make submodule
+	def process_mask(self, syn, inverted=False):
+
+		syn = syn.replace('[', '')
+		syn = syn.replace(']', '')
+		
+		val = 0
+
+		#negate first, else, mask...
+		if "!&" in syn and inverted is True:
+			syn = syn.replace('!&', '')
+			byte = int(syn, 16)
+			mask = byte & 0
+			val = mask
+		elif "&" in syn and inverted is False:
+			syn = syn.replace('&', '')
+			byte = int(syn, 16)
+			mask = byte & 255
+			val = mask
+
+		self.component_list.append(hex(val).replace('0x', '').zfill(2).replace('L', ''))
+
 	def sqr_colon(self, syn):
 		#convert to ints and find mean value in range
 		if syn.find(':') > -1:
@@ -110,6 +132,21 @@ class Sig2ByteGenerator:
 				syn = signature[0:index+1]
 				self.process_curly(syn)
 			elif check_byte == '[':
+				## IF WE HAVE A BYTEMASK: TODO: TEST MORE
+				check_inverted = signature[1:3]
+				if check_inverted == "!&":
+					index = signature.find(']')
+					syn = signature[1:index+1]
+					self.process_mask(syn, True)
+					return signature[index+1:]
+				else:
+					check_mask = signature[1:2]
+					if check_mask == "&":
+						index = signature.find(']')
+						syn = signature[0:index+1]
+						self.process_mask(syn)
+						return signature[index+1:]
+				## BYTEMASK WORK ENDS
 				index = signature.find(']')
 				syn = signature[0:index+1]
 				self.process_square(syn)
