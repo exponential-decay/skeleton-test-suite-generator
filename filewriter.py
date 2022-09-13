@@ -1,10 +1,13 @@
-from urlparse import urlparse
 import os
-import sys
 import string
-import signature2bytegenerator
-import ConfigParser
+import sys
 from io import BytesIO
+
+import ConfigParser
+from urlparse import urlparse
+
+import signature2bytegenerator
+
 
 class FileWriter:
 
