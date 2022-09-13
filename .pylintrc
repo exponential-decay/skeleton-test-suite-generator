@@ -1,0 +1,23 @@
+[MAIN]
+
+ignore=
+	LICENSE,
+	.pylintrc,
+
+ignore-patterns=
+	^(.+).ini$,
+	.gitignore,
+	.pre-commit-config.yaml,
+	^(.+).md$,
+	^(.+).sh$,
+	^(.+).service$,
+
+ignore-paths=
+	requirements/*,
+	.github/,
+	tests/fixtures/vcrpy/*,
+
+[MESSAGES CONTROL]
+
+disable =
+	C0301, 	# line-length too long, see Black documented recommendations.
