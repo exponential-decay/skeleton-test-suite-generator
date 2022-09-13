@@ -1,0 +1,7 @@
+*.pyc
+pronom-export/
+pronom-export*
+*.txt
+*.zip
+skeleton-suite-pronom-export*
+venv/
