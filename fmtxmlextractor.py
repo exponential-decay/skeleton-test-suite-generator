@@ -1,11 +1,12 @@
 # fmt and x-fmt PUID handler...
 # -*- coding: utf-8 -*-
 
-from collections import OrderedDict
-import xml.etree.ElementTree as etree
-import filewriter
-import sys
 import re
+import sys
+import xml.etree.ElementTree as etree
+from collections import OrderedDict
+
+import filewriter
 
 # Here we're going to create a structure and a list to handle the ordering
 # of Signature byte sequences...
