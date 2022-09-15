@@ -1,4 +1,3 @@
-import binascii
 import random
 
 
@@ -151,7 +150,7 @@ class Sig2ByteGenerator:
                 syn = signature[0 : index + 1]
                 self.process_curly(syn)
             elif check_byte == "[":
-                ## IF WE HAVE A BYTEMASK: TODO: TEST MORE
+                # if we have a bytemask.
                 check_inverted = signature[1:3]
                 if check_inverted == "!&":
                     index = signature.find("]")
@@ -165,7 +164,7 @@ class Sig2ByteGenerator:
                         syn = signature[0 : index + 1]
                         self.process_mask(syn)
                         return signature[index + 1 :]
-                ## BYTEMASK WORK ENDS
+                # bytemask work ends.
                 index = signature.find("]")
                 syn = signature[0 : index + 1]
                 self.process_square(syn)
@@ -183,7 +182,7 @@ class Sig2ByteGenerator:
 
     def process_signature(self, signature):
         if signature != "":
-            if self.check_syntax(signature) == True:
+            if self.check_syntax(signature) is True:
                 i = 0
                 for x in signature:
                     if not x.isalnum():  # are all alphanumeric

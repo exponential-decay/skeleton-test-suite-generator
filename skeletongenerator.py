@@ -19,11 +19,6 @@ def readPronomExport(config):
     for puids in ["fmt", "x-fmt"]:
         # go into loop to read each file in each folder and map data as required
         puid_xml_loc = export_location + "//" + puids
-        if os.path.exists(puid_xml_loc):
-            files_to_read = len(
-                os.walk(puid_xml_loc).next()[2]
-            )  # not sure what [2] used for in this context
-
         for root, dirs, files in os.walk(puid_xml_loc):
             for file in files:
                 file_path = root + "//" + file
@@ -43,7 +38,7 @@ def parseCommandLine():
         action="version",
         version="%(prog)s v0.2-BETA",
     )
-    args = parser.parse_args()
+    _ = parser.parse_args()
 
 
 def main():

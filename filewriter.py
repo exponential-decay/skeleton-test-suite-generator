@@ -4,7 +4,6 @@ import sys
 from io import BytesIO
 
 import ConfigParser
-from urlparse import urlparse
 
 import signature2bytegenerator
 
@@ -26,7 +25,7 @@ class FileWriter:
             + "//"
         )
 
-        if os.path.exists(self.newtriplesdir) == False:
+        if os.path.exists(self.newtriplesdir) is False:
             try:
                 os.makedirs(self.newtriplesdir)
             except OSError as err:
@@ -45,18 +44,11 @@ class FileWriter:
     # Write BOF sequence to file
     def write_header(self, pos, min, max, seq):
 
-        self.sig2map = (
-            signature2bytegenerator.Sig2ByteGenerator()
-        )  # TODO: New instance or not?
-
-        grt1 = ""  # "Attempting to correct: offset > current BOF"
-        grt2 = ""  # "file pointer.."
-        eq2 = ""  # "Attempting to correct: offset == zero so"
-        eq3 = ""  # "writing after..."
+        self.sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
         self.detect_write_issues(self.BOF)
         bof_sequence = ""
-        if self.bof_written == True:
+        if self.bof_written is True:
 
             # the sequences are aligned okay...
             if int(min) > int(self.boflen):
@@ -84,7 +76,7 @@ class FileWriter:
             bof_sequence = self.sig2map.map_signature(min, seq, 0, self.fillbyte)
 
         tmpread = False
-        if self.eof_written == True:  # read eof into tmp and re-write
+        if self.eof_written is True:  # read eof into tmp and re-write
             tmpread = self.write_seq_with_eof()
 
         for x in bof_sequence:
@@ -99,7 +91,7 @@ class FileWriter:
         self.boflen = self.nt_file.tell()
         self.bof_written = True
 
-        if tmpread == True:
+        if tmpread is True:
             self.nt_file.write(self.tmpbio.getvalue())
 
     # Write EOF sequence to file
@@ -131,7 +123,7 @@ class FileWriter:
         )  # TODO: New instance or not?
         self.detect_write_issues(self.VAR)
 
-        if self.var_written == False:
+        if self.var_written is False:
             self.var_pos = self.boflen
             self.var_written = True
 
@@ -141,7 +133,7 @@ class FileWriter:
         )  # padding sequence
 
         tmpread = False
-        if self.eof_written == True:  # read eof into tmp and re-write
+        if self.eof_written is True:  # read eof into tmp and re-write
             tmpread = self.write_seq_with_eof()
 
         for x in var_sequence:
@@ -149,11 +141,11 @@ class FileWriter:
                 s = map(ord, x.decode("hex"))
                 for y in s:
                     self.nt_file.write(chr(y))
-            except Exception as err:
+            except Exception as err:  # noqa
                 # TODO: remove bare except.
                 print("VAR Signature not mapped: {seq} ({err})\n", file=sys.stderr)
 
-        if tmpread == True:
+        if tmpread is True:
             self.nt_file.write(self.tmpbio.getvalue())
 
         self.var_pos = self.nt_file.tell()
@@ -172,7 +164,7 @@ class FileWriter:
             + ext
         )
         self.puid_no = puid_no
-        if os.path.exists(self.nt_string) == False:
+        if os.path.exists(self.nt_string) is False:
             # to standard out so as not to clutter error log...
             sys.stdout.write("Writing " + str(os.path.basename(self.nt_string)) + "\n")
             self.nt_file = open(self.nt_string, "wb")
@@ -207,29 +199,29 @@ class FileWriter:
         warn_str = string.ljust("WARNING:", 9, " ")
 
         if POS == self.BOF:
-            if self.bof_written == True:
+            if self.bof_written is True:
                 print(
                     f"{warn_str}{error_str}Attempting to write BOF with BOF written.",
                     file=sys.stderr,
                 )
-            if self.eof_written == True:
+            if self.eof_written is True:
                 print(
                     f"{info_str}{error_str}Attempting to write BOF with EOF written.",
                     file=sys.stderr,
                 )
         elif POS == self.EOF:
-            if self.eof_written == True:
+            if self.eof_written is True:
                 print(
                     f"{warn_str}{error_str}Attempting to write EOF with EOF written.",
                     file=sys.stderr,
                 )
         elif POS == self.VAR:
-            if self.var_written == True:
+            if self.var_written is True:
                 print(
                     f"{warn_str}{error_str}Attempting to write VAR with VAR written.",
                     file=sys.stderr,
                 )
-            if self.eof_written == True:
+            if self.eof_written is True:
                 print(
                     f"{info_str}{error_str}Attempting to write VAR with EOF written.",
                     file=sys.stderr,
