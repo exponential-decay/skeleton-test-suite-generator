@@ -11,13 +11,20 @@ class Sig2ByteGenerator:
     def __del__(self):
         del self.component_list[:]
 
+    @staticmethod
+    def int_list_from_sequence(bytes_):
+        """Convert bytes to a list."""
+        return [byte_ for byte_ in bytes.fromhex(bytes_)]
+
     def set_fillbyte(self, fillvalue):
+        if not (isinstance(fillvalue, int)):
+            self.fillbyte = "Random"
+            return
         if fillvalue < 0 or fillvalue > 255:
-            global fillbyte
-            fillbyte = "Random"
-        else:
-            fillbyte = fillvalue
-        return fillbyte
+            self.fillbyte = "Random"
+            return
+        self.fillbyte = fillvalue
+        return
 
     def check_syntax(self, signature):
         for i in self.open_syntax:
@@ -25,8 +32,8 @@ class Sig2ByteGenerator:
                 return True
 
     def create_bytes(self, no):
-        for i in range(no):
-            if fillbyte == "Random":
+        for i in range(int(no)):
+            if self.fillbyte == "Random":
                 self.component_list.append(
                     hex(random.randint(0, 255))
                     .replace("0x", "")
@@ -35,7 +42,7 @@ class Sig2ByteGenerator:
                 )
             else:
                 self.component_list.append(
-                    hex(fillbyte).replace("0x", "").zfill(2).replace("L", "")
+                    hex(self.fillbyte).replace("0x", "").zfill(2).replace("L", "")
                 )
         return True
 
@@ -95,7 +102,7 @@ class Sig2ByteGenerator:
         if syn.find(":") > -1:
             new_str = syn.split(":")
             val = (int(new_str[0], 16) + int(new_str[1], 16)) / 2
-            hx = hex(val).replace("0x", "").zfill(2).replace("L", "")
+            hx = hex(int(val)).replace("0x", "").zfill(2).replace("L", "")
             # this is a hack to solve issue #8 we've never come across it before
             # but it could conceivably happen again... depends how large the value
             # is following a colon and if the hex representation is odd numbered
@@ -105,8 +112,9 @@ class Sig2ByteGenerator:
 
     def sqr_not(self, syn):
         syn = syn.replace("!", "")
-        s = map(ord, syn.decode("hex"))
+        s = self.int_list_from_sequence(syn)
         i = 0
+        print(str(s))
         for h in s:  # this function could be seriously busted - check
             if s[i] == 0:
                 s[i] = s[i] + 1
@@ -124,7 +132,7 @@ class Sig2ByteGenerator:
         syn = syn[0:index]
 
         if syn.find("[") == -1:
-            s = map(ord, syn.decode("hex"))
+            s = self.int_list_from_sequence(syn)
             for i in range(s.__len__()):
                 self.component_list.append(
                     hex(s[i]).replace("0x", "").zfill(2).replace("L", "")
