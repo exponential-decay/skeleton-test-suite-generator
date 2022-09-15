@@ -94,8 +94,8 @@ def handler(puid_type, number_path_pair):
 			extension = ''
 			ext_added = False
 			
-	except IOError as (errno, strerror):
-		sys.stderr.write("IO error({0}): {1}".format(errno, strerror) + ' : ' + file_string + '\n')
+	except IOError as err:
+		print("{err} : {file_string}", file=sys.stderr)
 
 	global bytesequences
 	bytesequences = sort_sequences(bytesequences)
