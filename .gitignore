@@ -5,3 +5,4 @@ pronom-export*
 *.zip
 skeleton-suite-pronom-export*
 venv/
+skeleton-suite/*

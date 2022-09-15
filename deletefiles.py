@@ -1,6 +1,5 @@
+import configparser as ConfigParser
 import shutil
-
-import ConfigParser
 
 
 def cleanup():

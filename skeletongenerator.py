@@ -1,12 +1,11 @@
 # skeleton test suite generator
 
 import argparse
+import configparser as ConfigParser
 import os
 import re
 import sys
 import time
-
-import ConfigParser
 
 import deletefiles
 import fmtxmlextractor
@@ -46,7 +45,8 @@ def main():
     parseCommandLine()
 
     # time script execution time roughly...
-    t0 = time.clock()
+    # TODO: time.process_time() may also be appropriate.
+    t0 = time.perf_counter()
 
     config = ConfigParser.RawConfigParser()
     config.read("skeletonsuite.cfg")
@@ -55,7 +55,10 @@ def main():
 
     # print script execution time...
     sys.stdout.write(
-        "Skeleton suite generation time:    " + str(time.clock() - t0) + "s" + "\n"
+        "Skeleton suite generation time:    "
+        + str(time.perf_counter() - t0)
+        + "s"
+        + "\n"
     )
 
     # print script stats
