@@ -106,7 +106,7 @@ class Sig2ByteGenerator:
             # but it could conceivably happen again... depends how large the value
             # is following a colon and if the hex representation is odd numbered
             if len(hx) % 2 != 0:
-                hx = hex(val).replace("0x", "").zfill(len(hx) + 1).replace("L", "")
+                hx = hex(int(val)).replace("0x", "").zfill(len(hx) + 1).replace("L", "")
             self.component_list.append(hx)
 
     def sqr_not(self, syn):

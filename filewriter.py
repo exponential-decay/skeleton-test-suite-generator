@@ -1,9 +1,7 @@
+import configparser as ConfigParser
 import os
-import string
 import sys
 from io import BytesIO
-
-import ConfigParser
 
 import signature2bytegenerator
 
@@ -40,6 +38,11 @@ class FileWriter:
         except ValueError as err:
             print(err, file=sys.stderr)
             self.fillbyte = 0
+
+    @staticmethod
+    def int_list_from_sequence(bytes_):
+        """Convert bytes to a list."""
+        return [byte_ for byte_ in bytes.fromhex(bytes_)]
 
     # Write BOF sequence to file
     def write_header(self, pos, min, max, seq):
@@ -81,9 +84,8 @@ class FileWriter:
 
         for x in bof_sequence:
             try:
-                s = map(ord, x.decode("hex"))
-                for y in s:
-                    self.nt_file.write(chr(y))
+                s = self.int_list_from_sequence(x)
+                self.nt_file.write(bytes(s))
             except TypeError as err:
                 error = f"{err} BOF Signature not mapped: {seq}"
                 print(error, file=sys.stderr)
@@ -107,9 +109,8 @@ class FileWriter:
 
         for x in eof_sequence:
             try:
-                s = map(ord, x.decode("hex"))
-                for y in s:
-                    self.nt_file.write(chr(y))
+                s = self.int_list_from_sequence(x)
+                self.nt_file.write(bytes(s))
             except Exception as err:
                 # TODO: remove bare except.
                 print(f"EOF Signature not mapped: {seq} ({err})\n", file=sys.stderr)
@@ -138,9 +139,8 @@ class FileWriter:
 
         for x in var_sequence:
             try:
-                s = map(ord, x.decode("hex"))
-                for y in s:
-                    self.nt_file.write(chr(y))
+                s = self.int_list_from_sequence(x)
+                self.nt_file.write(bytes(s))
             except Exception as err:  # noqa
                 # TODO: remove bare except.
                 print("VAR Signature not mapped: {seq} ({err})\n", file=sys.stderr)
@@ -194,9 +194,9 @@ class FileWriter:
     # provide feedback to users as a warning.
     def detect_write_issues(self, POS):
 
-        error_str = string.ljust("(" + self.puid_str + "): ", 13, " ")
-        info_str = string.ljust("INFO:", 9, " ")
-        warn_str = string.ljust("WARNING:", 9, " ")
+        error_str = str.ljust("(" + self.puid_str + "): ", 13, " ")
+        info_str = str.ljust("INFO:", 9, " ")
+        warn_str = str.ljust("WARNING:", 9, " ")
 
         if POS == self.BOF:
             if self.bof_written is True:

@@ -35,6 +35,7 @@ SEQPOS = 0
 MINOFF = 1
 MAXOFF = 2
 BYTSEQ = 3
+
 sequence_list = ["null", "null", "null", "null"]
 
 extension = ""
@@ -54,13 +55,6 @@ def get_stats():
             ("Number of files created:           ", files_created),
         ]
     )
-
-
-def reset_sequence_list():
-    global sequence_list
-    del sequence_list
-    global sequence_list
-    sequence_list = ["null", "null", "null", "null"]
 
 
 # Handle fmt xml objects...
@@ -121,7 +115,9 @@ def handler(puid_type, number_path_pair):
 # Forward data to file writer object to create skeleton suite files
 def handle_output(puid_type, puid_str, file_no, int_sig_no):
     sigID = 0
+
     for x in content_list:
+
         if x[0] == "Internal Signature ID":
             fr = filewriter.FileWriter(puid_type)  # create file writing object
             if x[1] != sigID:
@@ -135,10 +131,9 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
                 fr.write_file(puid_type, file_no, sigID, puid_str, ext)
 
         if x[0] == "Byte sequence":
+
             bs = ByteSequence()
-
             bs.fr = fr
-
             bs.pos = x[1][0]
             min_off = x[1][1]
             max_off = x[1][2]
@@ -221,6 +216,8 @@ def extract(puid_type, file_no, xml_iter, parent_node):
 # Given the parent and subnode in XML does it have data we're interested in?
 def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
 
+    global sequence_list
+
     parent_subnode_pair = parent_subnode_pair.replace("'", "")
 
     if parent_subnode_pair == "FileFormat FormatName":
@@ -251,7 +248,7 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
     elif parent_subnode_pair == "ByteSequence ByteSequenceValue":
         sequence_list.insert(BYTSEQ, node_value)
         content_list.append(["Byte sequence", sequence_list])
-        reset_sequence_list()
+        sequence_list = ["null", "null", "null", "null"]
     elif parent_subnode_pair == "ExternalSignature Signature":
         global extension
         extension = node_value
@@ -275,6 +272,7 @@ def strip_text(text):
 
 # Escape dodgy characters... TODO: Reworked from prev. script - needed??
 def text_replace(node_value_text):
+    node_value_text = node_value_text.decode("utf8")
     node_value_text = node_value_text.replace("\n", "\\n")
     node_value_text = node_value_text.replace('"', '\\"')
     node_value_text = node_value_text.replace("\t", "\\t")
