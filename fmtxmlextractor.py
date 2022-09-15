@@ -1,7 +1,6 @@
 # fmt and x-fmt PUID handler...
 # -*- coding: utf-8 -*-
 
-import re
 import sys
 import xml.etree.ElementTree as etree
 from collections import OrderedDict
@@ -60,6 +59,7 @@ def get_stats():
 def reset_sequence_list():
     global sequence_list
     del sequence_list
+    global sequence_list
     sequence_list = ["null", "null", "null", "null"]
 
 
@@ -109,7 +109,7 @@ def handler(puid_type, number_path_pair):
             extension = ""
             ext_added = False
 
-    except IOError as err:
+    except IOError as err:  # noqa
         print("{err} : {file_string}", file=sys.stderr)
 
     global bytesequences
@@ -206,7 +206,7 @@ def extract(puid_type, file_no, xml_iter, parent_node):
             extract(puid_type, file_no, new_iter, temporary_parent_node)
 
         else:
-            if i.text != None:
+            if i.text is not None:
                 if ord(i.text[0]) != 10:  # check for LF character...
                     parent_text = parent_node.replace(
                         "{http://pronom.nationalarchives.gov.uk}", ""
@@ -215,7 +215,6 @@ def extract(puid_type, file_no, xml_iter, parent_node):
                     # handle the normalization of text here... covers all puid types
                     node_value = text_replace(i.text.encode("UTF-8"))
                     parent_subnode_pair = parent_text + " " + node_text
-                    compare_result = False
                     node_handler(puid_type, file_no, parent_subnode_pair, node_value)
 
 
@@ -259,7 +258,7 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
     elif parent_subnode_pair == "ExternalSignature SignatureType":
         if node_value == "File extension":
             global ext_added
-            if ext_added == False:
+            if ext_added is False:
                 header_list.append(["File Extension", extension])
                 content_list.append(["File Extension", extension])
                 ext_added = True
