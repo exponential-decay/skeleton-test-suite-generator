@@ -1,4 +1,4 @@
-# fmt and x-fmt PUID handler...
+"""fmt and x-fmt PUID handler..."""
 # -*- coding: utf-8 -*-
 
 import sys
@@ -12,6 +12,8 @@ import filewriter
 
 
 class ByteSequence:
+    """Structure of a Byte sequence in PRONOM."""
+
     fr = ""
     pos = ""
     min_off = ""
@@ -36,6 +38,9 @@ MINOFF = 1
 MAXOFF = 2
 BYTSEQ = 3
 
+# Sequence list is structurally always 4 parts. Items are inserted at
+# the correct positions. This may be better served as part of a data
+# class.
 sequence_list = ["null", "null", "null", "null"]
 
 extension = ""
@@ -48,6 +53,7 @@ files_created = 0
 
 
 def get_stats():
+    """Structure statistics for the caller."""
     return OrderedDict(
         [
             ("Number of PRONOM records:          ", record_count),
@@ -59,8 +65,9 @@ def get_stats():
 
 # Handle fmt xml objects...
 def handler(puid_type, number_path_pair):
+    """Handle XML objects from PRONOM."""
 
-    global record_count, fmt_no, fr
+    global record_count, fmt_no
     record_count += 1
     fmt_no = number_path_pair[0]
 
@@ -89,12 +96,9 @@ def handler(puid_type, number_path_pair):
             global format_sig_count
             format_sig_count += 1
 
-            puid_str = puid_type + "/" + str(file_no)
             extract(puid_type, file_no, xml_iter, "")
 
-            fr = handle_output(
-                puid_type, puid_str, file_no, number_of_internal_signatures
-            )
+            handle_output(puid_type, file_no)
 
             del header_list[:]
             del content_list[:]
@@ -103,7 +107,8 @@ def handler(puid_type, number_path_pair):
             extension = ""
             ext_added = False
 
-    except IOError as err:  # noqa
+    except IOError as err:
+        _ = err
         print("{err} : {file_string}", file=sys.stderr)
 
     global bytesequences
@@ -112,8 +117,10 @@ def handler(puid_type, number_path_pair):
     bytesequences = []
 
 
-# Forward data to file writer object to create skeleton suite files
-def handle_output(puid_type, puid_str, file_no, int_sig_no):
+def handle_output(puid_type, file_no):
+    """Forward data to file writer object to create skeleton suite
+    files.
+    """
     sigID = 0
 
     for x in content_list:
@@ -128,7 +135,7 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
                     ext = "nul"
 
                 # New internal sig, new file - create
-                fr.write_file(puid_type, file_no, sigID, puid_str, ext)
+                fr.write_file(puid_type, file_no, sigID, ext)
 
         if x[0] == "Byte sequence":
 
@@ -152,6 +159,7 @@ def handle_output(puid_type, puid_str, file_no, int_sig_no):
 
 
 def sort_sequences(bs):
+    """Sort byte sequences."""
 
     bof = []
     eof = []
@@ -175,20 +183,20 @@ def sort_sequences(bs):
 
 
 def write_signature(bs):
+    """Write signature given each different component."""
     for b in bs:
         if b.pos == "Absolute from BOF":
-            b.fr.write_header(b.pos, b.min_off, b.max_off, b.seq)
+            b.fr.write_header(b.min_off, b.seq)
         if b.pos == "Absolute from EOF":
-            b.fr.write_footer(b.pos, b.min_off, b.max_off, b.seq)
+            b.fr.write_footer(b.min_off, b.seq)
         if b.pos == "Variable":
-            # if min_off > 0:
-            # 	print puid_str + " " + str(min_off)
-            b.fr.write_var(b.pos, b.min_off, b.max_off, b.seq)
+            b.fr.write_var(b.min_off, b.max_off, b.seq)
 
 
-# Run through XML elements when we get to a node element fwd to node handler
 def extract(puid_type, file_no, xml_iter, parent_node):
-
+    """Run through XML elements when we get to a node element fwd to
+    node handler.
+    """
     for i in xml_iter:
         index = len(i)
 
@@ -210,11 +218,13 @@ def extract(puid_type, file_no, xml_iter, parent_node):
                     # handle the normalization of text here... covers all puid types
                     node_value = text_replace(i.text.encode("UTF-8"))
                     parent_subnode_pair = parent_text + " " + node_text
-                    node_handler(puid_type, file_no, parent_subnode_pair, node_value)
+                    node_handler(parent_subnode_pair, node_value)
 
 
-# Given the parent and subnode in XML does it have data we're interested in?
-def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
+def node_handler(parent_subnode_pair, node_value):
+    """Given the parent and subnode in XML does it have data we're
+    interested in?.
+    """
 
     global sequence_list
 
@@ -261,17 +271,19 @@ def node_handler(puid_type, puid_no, parent_subnode_pair, node_value):
                 ext_added = True
 
 
-# Strip <Element from tags and {http:// etc...
 def strip_text(text):
-    new_text = str(text).strip("<Element")
+    """Strip <Element from tags and {http:// etc..."""
+    new_text = str(text).replace("<Element", "", 1)
     substr_pos = new_text[1:].find(" ")
     return new_text[1 : substr_pos + 1].replace(
         "{http://pronom.nationalarchives.gov.uk}", ""
     )
 
 
-# Escape dodgy characters... TODO: Reworked from prev. script - needed??
 def text_replace(node_value_text):
+    """Escape dodgy characters... TODO: Reworked from prev. script -
+    needed??
+    """
     node_value_text = node_value_text.decode("utf8")
     node_value_text = node_value_text.replace("\n", "\\n")
     node_value_text = node_value_text.replace('"', '\\"')

@@ -4,6 +4,8 @@ import signature2bytegenerator
 
 
 def test_set_fillbyte():
+    """Tests that fill byte functions work as anticipated."""
+
     sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
     # check random is set correctly > 255
@@ -23,8 +25,8 @@ def test_set_fillbyte():
     assert "Random" == sig2map.fillbyte
 
 
-# check function finds syntax values: ['{', '(', '[', '?', '*']
 def test_check_syntax():
+    """Check function finds syntax values: ['{', '(', '[', '?', '*']."""
     sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
     # signatures demonstrating elements of syntax
@@ -40,8 +42,10 @@ def test_check_syntax():
     assert sig2map.check_syntax("") is None
 
 
-# check function creates random and non-random bytes of correct len
 def test_create_bytes():
+    """Check function creates random and non-random bytes of correct
+    length.
+    """
     sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
     # create five null bytes
@@ -72,6 +76,8 @@ def test_create_bytes():
 
 
 def test_map_signature():
+    """Tests that signatures map as anticipated."""
+
     sig2map = signature2bytegenerator.Sig2ByteGenerator()
 
     # Test complex signature with all possible syntax

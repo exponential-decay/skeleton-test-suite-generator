@@ -1,4 +1,4 @@
-# skeleton test suite generator
+"""Skeleton test suite generator."""
 
 import argparse
 import configparser as ConfigParser
@@ -11,14 +11,14 @@ import deletefiles
 import fmtxmlextractor
 
 
-# read pronom export and forward to puid handlers
 def readPronomExport(config):
+    """Read pronom export and forward to puid handlers."""
     export_location = config.get("locations", "xmlexport")
 
     for puids in ["fmt", "x-fmt"]:
         # go into loop to read each file in each folder and map data as required
         puid_xml_loc = export_location + "//" + puids
-        for root, dirs, files in os.walk(puid_xml_loc):
+        for root, _, files in os.walk(puid_xml_loc):
             for file in files:
                 file_path = root + "//" + file
                 file_no = re.findall(r"\d+", file_path)[
@@ -28,6 +28,7 @@ def readPronomExport(config):
 
 
 def parseCommandLine():
+    """Handle skeleton generator CLI."""
     parser = argparse.ArgumentParser(
         description="Tool for the automated generation of digital objects based on the digital signatures documented in the PRONOM database maintained by The National Archives, UK."
     )
@@ -41,6 +42,7 @@ def parseCommandLine():
 
 
 def main():
+    """Primary entry-point for this script."""
 
     parseCommandLine()
 
