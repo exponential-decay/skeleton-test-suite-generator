@@ -21,3 +21,6 @@ ignore-paths=
 
 disable =
 	C0301, 	# line-length too long, see Black documented recommendations.
+	W0511,  # TODOs inline, normally we would not ignore these. Come back to.
+	R0902,  # Too many instance attributes.
+	R1732,  # Use context manager for Open(). Come back to.
