@@ -11,6 +11,7 @@ ignore-patterns=
 	^(.+).md$,
 	^(.+).sh$,
 	^(.+).service$,
+	^(.+).cfg$
 
 ignore-paths=
 	requirements/*,
