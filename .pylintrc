@@ -25,3 +25,7 @@ disable =
 	W0511,  # TODOs inline, normally we would not ignore these. Come back to.
 	R0902,  # Too many instance attributes.
 	R1732,  # Use context manager for Open(). Come back to.
+	W0603,  # Using Global statement.
+	C0103,  # Constant doesn't use upper-case conventions.
+	R0903,  # To few public methods in Class.
+	R0912,  # Too many branches.
